@@ -1,43 +1,59 @@
-import Link from "next/link";
+"use client"
 
-export default function Page(){
-  return(
-      <div className="flex flex-col justify-center items-center overflow-y-auto h-full bg-[url('/img/1.jpg')] bg-repeat">
-        <div className="w-[80%] md:w-[40%] text-white text-center">
-          <p className="text-5xl font-semibold pb-6 text-center">
-            AirFood
-          </p>
-          <p className="text-center text-lg w-full">
-            Сервис генерации меню для авиакомпаний.
-          </p>
-          <p className="text-center pb-14 text-lg w-full">
-            Удобно. Быстро. В одном месте.
-          </p>
-        </div>
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-        <div className="mb-3">
-          <Link href="/menu">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              Начать с ручным вводом
-            </button>
-          </Link>
-        </div>
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
-        <div className="mb-3">
-          <Link href="/flights-menu">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              Начать с использованием Aviationstack
-            </button>
-          </Link>
-        </div>
+const formSchema = z.object({
+  username: z.string().min(2).max(50),
+})
 
-        <div>
-          <Link href="/flights">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              Полёты
-            </button>
-          </Link>
+const LoginPage = () => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  })
+ 
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+  }
+  return (
+    <div className="flex items-center justify-center w-full h-full gap-x-20">
+      <div>
+        <p className="text-sky-500 text-7xl font-extrabold">
+          AirTeach
+        </p>
+      </div>
+      <div className="bg-white text-2xl w-fit p-3 rounded-xl">
+        <p className="text-gray-500 font-semi\\bold text-base">
+          Авторизация
+        </p>
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <Label htmlFor="email">Email</Label>
+          <Input type="email" id="email" />
         </div>
       </div>
+    </div>
+
   )
-} 
+}
+
+export default LoginPage

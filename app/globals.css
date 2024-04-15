@@ -6,14 +6,5 @@ html,
 body,
 :root {
   height: 100%;
-  background-color: #5BB9A5;
-}
-
-.form {
-  animation: 2s show ease;
-}
-
-@keyframes show {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  background-color: #EBEBEB;
 }
