@@ -23,6 +23,7 @@ const PilotCard: React.FC<{ pilot: IPilot }> = ({ pilot }) => (
 const Page = () => {
     const [pilotForSearch, setPilotForSearch] = useState("");
     const [pilots, setPilots] = useState<IPilot[]>([]);
+    console.log(pilots)
 
     const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
         setPilotForSearch(e.target.value);
@@ -30,13 +31,13 @@ const Page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(`http://localhost:3000/pilot/find?pilotForSearch=${pilotForSearch}`, { headers: { "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0NGIxZjQyMy05NDdmLTRlZjUtOGY3OC04Zjk2NzhmNzJmYTIiLCJ1c2VybmFtZSI6ImFydGVtIiwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzEzMjkzNzA1LCJleHAiOjE3MTMyOTczMDV9.a0ioMGwwZx8mR-irvx96qY4WXrWtLe8b51qRinyJFHc` } });
-            setPilots(response.data);
+            const response = await axios.get(`http://localhost:3000/pilot?pilotForSearch=${pilotForSearch}&limit=2`, { headers: { "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZDBmYzUxNi0yMzEzLTQzZGQtOTRjNC1jMDNkOWNjYjNlODQiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzEzNzcwMzkxLCJleHAiOjE3MTM3NzM5OTF9.aWMOoVAs4626qftndb7TZSO9CyR_vs5yGkag8iI3N_g` } });
+            setPilots(response.data.pilots);
         }
 
         const timer = setTimeout(() => {
             fetchData();
-        }, 3000);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, [pilotForSearch]);
