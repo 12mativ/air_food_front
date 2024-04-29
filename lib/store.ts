@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import flightsReducer from "./features/flights/flightsSlice";
 import userReducer from "./features/user/userSlice";
+import studentsReducer from "./features/students/studentsSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       flightsReducer,
-      userReducer
+      userReducer,
+      studentsReducer
     },
   });
 };
