@@ -38,6 +38,14 @@ export default function Page(){
             </button>
           </Link>
         </div>
+
+        <div>
+          <Link href="/air-teach">
+            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
+              AirTeach
+            </button>
+          </Link>
+        </div>
       </div>
   )
 } 

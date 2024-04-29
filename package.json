@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@types/uuid": "^9.0.7",
     "axios": "^1.6.1",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.364.0",
     "next": "latest",
     "react": "latest",
