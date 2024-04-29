@@ -3,11 +3,27 @@ import { jwtDecode } from "jwt-decode";
 
 export type RolesType = "ADMIN" | "COURSE_ORGANISER" | "COACH" | "STUDENT";
 
-export const register = async (
-  email: string,
-  password: string,
-  roles: RolesType
-) => {
+export type JwtType = {
+  iss?: string | undefined;
+  sub?: string | undefined;
+  aud?: string | string[] | undefined;
+  exp?: number | undefined;
+  nbf?: number | undefined;
+  iat?: number | undefined;
+  jti?: string | undefined;
+  email?: string;
+  roles?: RolesType[];
+};
+
+export const register = async ({
+  email,
+  password,
+  roles,
+}: {
+  email: string;
+  password: string;
+  roles: RolesType[];
+}): Promise<JwtType> => {
   const response = await $host.post("/auth/register", {
     email,
     password,
@@ -20,7 +36,10 @@ export const register = async (
   return { ...jwtDecode(response.data.jwt) };
 };
 
-export const login = async (email: string, password: string) => {
+export const login = async (
+  email: string,
+  password: string
+): Promise<JwtType> => {
   const response = await $host.post("/auth/login", {
     email,
     password,
@@ -31,7 +50,7 @@ export const login = async (email: string, password: string) => {
   return { ...jwtDecode(response.data.jwt) };
 };
 
-export const check = async () => {
+export const check = async (): Promise<JwtType | undefined> => {
   const token = localStorage.getItem("token");
   if (token) {
     const response = await $authHost.get("/auth");

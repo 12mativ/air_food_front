@@ -31,7 +31,7 @@ export default function Page(){
           </Link>
         </div>
 
-        <div>
+        <div className="mb-3">
           <Link href="/flights">
             <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
               Полёты
