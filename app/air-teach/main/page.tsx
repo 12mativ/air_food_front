@@ -163,7 +163,7 @@ const Page = () => {
                 ))}
 
             </div>
-            <div className="fixed bottom-0 left-0 w-full p-4 shadow-lg bg-transparent bg-[#ebebeb]">
+            <div className="fixed bottom-0 left-0 w-full p-4 shadow-lg bg-[#ebebeb]">
                 <div className="flex justify-center">
                     {renderPageButtons()}
                 </div>
