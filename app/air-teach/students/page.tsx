@@ -20,6 +20,7 @@ const Page = () => {
     const students = useAppSelector(state => state.studentsReducer.students)
     const user = useAppSelector(state => state.userReducer.user)
     const dispatch = useAppDispatch();
+    const limit = 8;
 
     const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
         setStudentForSearch(e.target.value);
@@ -33,9 +34,9 @@ const Page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 8 })
+            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: limit })
             dispatch(addStudents(response.data.students));
-            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 8));
+            setTotalPages(Math.ceil(response.data.studentsTotalAmount / limit));
         }
 
         const timer = setTimeout(() => {
@@ -47,9 +48,9 @@ const Page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 22 })
+            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: limit })
             dispatch(addStudents(response.data.students));
-            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 22));
+            setTotalPages(Math.ceil(response.data.studentsTotalAmount / limit));
         }
 
         fetchData();
