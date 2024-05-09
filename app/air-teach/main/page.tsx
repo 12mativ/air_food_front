@@ -32,9 +32,9 @@ const Page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 1 })
+            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 22 })
             dispatch(addStudents(response.data.students));
-            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 1));
+            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 22));
         }
 
         const timer = setTimeout(() => {
@@ -46,9 +46,9 @@ const Page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 1 })
+            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 22 })
             dispatch(addStudents(response.data.students));
-            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 1));
+            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 22));
         }
 
         fetchData();
@@ -156,7 +156,7 @@ const Page = () => {
     }
 
     return (
-        <div className="w-full h-full items-center bg-[#ebebeb]">
+        <div className="w-full h-full items-center">
             <div className="fixed top-0 left-0 w-full z-10 h-16 bg-[#7f7f7f]">
                 <div className='absolute top-1/2 transform -translate-y-1/2 left-5 text-white'>
                     <LogOut onClick={handleLogout} size={25} className="cursor-pointer" />
@@ -174,8 +174,8 @@ const Page = () => {
                     </form>
                 </div>
             </div>
-            <div className="flex flex-wrap mx-10 mt-10 pt-20">
-                {students.map((student) => (
+            <div className="flex flex-wrap mx-10 pt-32 pb-20">
+                {students.map((student: IStudent) => (
                     <StudentCard key={student.id} student={student} />
                 ))}
             </div>
