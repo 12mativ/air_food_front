@@ -11,6 +11,7 @@ import { LogOut } from "lucide-react";
 import { redirect } from "next/navigation";
 import StudentCard from "@/components/StudentCard";
 import { LiaUserCircleSolid } from "react-icons/lia";
+import Header from "@/components/header";
 
 const Page = () => {
     const [studentForSearch, setStudentForSearch] = useState("");
@@ -32,9 +33,9 @@ const Page = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 22 })
+            const response = await getStudents({ studentForSearch: studentForSearch, page: currentPage, limit: 8 })
             dispatch(addStudents(response.data.students));
-            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 22));
+            setTotalPages(Math.ceil(response.data.studentsTotalAmount / 8));
         }
 
         const timer = setTimeout(() => {
@@ -156,23 +157,17 @@ const Page = () => {
     }
 
     return (
-        <div className="w-full h-full items-center">
-            <div className="fixed top-0 left-0 w-full z-10 h-16 bg-[#7f7f7f]">
-                <div className='absolute top-1/2 transform -translate-y-1/2 left-5 text-white'>
-                    <LogOut onClick={handleLogout} size={25} className="cursor-pointer" />
-                </div>
-                <div className='flex flex-row absolute top-1/2 transform -translate-y-1/2 right-5 text-white'>
-                    <LiaUserCircleSolid size={25} />
-                    {user.email}
-                </div>
-                <div className="mx-10 py-20">
-                    <form className="relative ">
-                        <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-8 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Search students" />
-                        <div className="absolute top-1/2 transform -translate-y-1/2 left-2 text-gray-400">
-                            <IoIosSearch />
-                        </div>
-                    </form>
-                </div>
+        <div className="w-full h-full items-center p-5">
+
+            <Header />
+
+            <div className="mt-20">
+                <form className="hover:text-sky-600">
+                    <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-8 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Search students" />
+                    <div className="absolute top-1/2 transform -translate-y-1/2 left-2 text-gray-400">
+                        <IoIosSearch />
+                    </div>
+                </form>
             </div>
             <div className="flex flex-wrap mx-10 pt-32 pb-20">
                 {students.map((student: IStudent) => (

@@ -36,7 +36,7 @@ const Page = () => {
   }, []);
 
   if (user.isAuth) {
-    return redirect("/main");
+    return redirect("/students");
   }
 
   if (!user.isAuth) {
