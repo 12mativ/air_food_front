@@ -167,7 +167,7 @@ const Page = () => {
                 </div>
                 <div className="mx-10 py-20">
                     <form className="relative ">
-                        <input className="shadow-lg rounded-xl sm:w-full md:w-[40%] lg:h-8 xl:w-[28%] 2xl:w-[20%] sm:h-12 pl-8 h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Search students" />
+                        <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-8 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Search students" />
                         <div className="absolute top-1/2 transform -translate-y-1/2 left-2 text-gray-400">
                             <IoIosSearch />
                         </div>
