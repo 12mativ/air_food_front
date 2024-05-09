@@ -164,7 +164,7 @@ const Page = () => {
                         <SelectValue placeholder="Роль" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       <SelectItem value="STUDENT">Обучающийся</SelectItem>
                       <SelectItem value="ADMIN">Администратор</SelectItem>
                       <SelectItem value="COURSE_ORGANISER">
@@ -173,7 +173,7 @@ const Page = () => {
                       <SelectItem value="COACH">Тренер</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-red-600" />
                 </FormItem>
               )}
             />
