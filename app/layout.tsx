@@ -2,6 +2,7 @@ import StoreProvider from '@/components/providers/redux-store-provider'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Open_Sans } from 'next/font/google'
+import { ModalProvider } from '@/components/providers/modal-provider'
 
 const font = Open_Sans({ subsets: ['latin'] })
 
@@ -18,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={font.className}>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <ModalProvider />
+          {children}
+        </StoreProvider>
       </body>
     </html>
   )

@@ -4,6 +4,7 @@ export interface IStudent {
   id: string;
   email: string;
   firstName: string;
+  middleName: string;
   lastName: string;
   birthDate: string;
   userId: string;
