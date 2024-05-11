@@ -1,3 +1,4 @@
+import { findEqualItemsById } from './../../store';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IStudent {
@@ -25,9 +26,20 @@ export const studentsSlice = createSlice({
     addStudents: (state, action: PayloadAction<IStudent[]>) => {
       state.students = action.payload;
     },
+    updateStudent: (state, action: PayloadAction<IStudent>) => {
+      state.students.forEach((student) => {
+        if (student.id === action.payload.id) {
+          const {firstName, lastName, middleName, birthDate} = action.payload
+          student.firstName = firstName
+          student.lastName = lastName
+          student.middleName = middleName
+          student.birthDate = birthDate
+        }
+      })
+    },
   },
 });
 
 export default studentsSlice.reducer;
 
-export const { addStudents } = studentsSlice.actions;
+export const { addStudents, updateStudent } = studentsSlice.actions;

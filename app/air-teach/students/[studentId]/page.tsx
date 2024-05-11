@@ -30,8 +30,9 @@ const Page = () => {
         <div className="flex flex-row items-center gap-x-20">
           <IoPersonSharp className="text-9xl text-gray-400" />
           <div className="flex flex-col gap-y-3 text-gray-500 font-semibold">
-            <p>Имя: {student?.firstName ? student.firstName : "Не задано"}</p>
             <p>Фамилия: {student?.lastName ? student.lastName : "Не задано"}</p>
+            <p>Имя: {student?.firstName ? student.firstName : "Не задано"}</p>
+            <p>Отчество: {student?.middleName ? student.middleName : "Не задано"}</p>
             <p>
               Возраст: {student?.birthDate ? student.birthDate : "Не задано"}
             </p>

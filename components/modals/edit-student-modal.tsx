@@ -37,6 +37,8 @@ import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "../ErrorAlert";
 import { CalendarIcon } from "lucide-react";
+import { editStudent } from "@/http/students/studentsAPI";
+import { updateStudent } from "@/lib/features/students/studentsSlice";
 
 const formSchema = z.object({
   firstName: z
@@ -88,24 +90,22 @@ export const EditStudentModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
-    // try {
-    //   const response = await updateOrganisation({
-    //     organisationId: data.organisationId!,
-    //     organisationName: values.name,
-    //   });
+    try {
+      const response = await editStudent({
+        id: data.student!.id,
+        firstName: values.firstName!,
+        lastName: values.lastName!,
+        middleName: values.middleName!,
+        birthDate: format(values.birthDate!, "yyyy-MM-dd")
+      });
+      
+      dispatch(updateStudent(response.data));
 
-    //   const dataForEditOrganisation = {
-    //     organisationId: response.data.id,
-    //     organisationName: response.data.name,
-    //   };
-    //   dispatch(editOrganisation(dataForEditOrganisation));
-
-    //   form.reset();
-    //   handleClose();
-    // } catch (error: AxiosError | any) {
-    //   setError("Произошла ошибка при редактировании организации.");
-    // }
+      form.reset();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании студента.");
+    }
   };
 
   const handleClose = () => {

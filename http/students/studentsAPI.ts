@@ -21,3 +21,20 @@ export const getStudents = async ({
   );
   return response;
 };
+
+export const editStudent = async ({
+  id,
+  firstName,
+  lastName,
+  middleName,
+  birthDate,
+}: {
+  id: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  birthDate: string;
+}): Promise<AxiosResponse<IStudent>> => {
+  const response = await $authHost.patch(`/student/${id}`, {firstName, lastName, middleName, birthDate});
+  return response; 
+};
