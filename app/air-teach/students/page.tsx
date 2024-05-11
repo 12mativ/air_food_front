@@ -156,6 +156,7 @@ const Page = () => {
     if (user.roles.includes("STUDENT")) {
         return redirect('/air-teach/lk')
     }
+    
 
     return (
         <div className="w-full h-full items-center p-5">

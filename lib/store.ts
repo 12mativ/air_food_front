@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import flightsReducer from "./features/flights/flightsSlice";
 import userReducer from "./features/user/userSlice";
 import studentsReducer from "./features/students/studentsSlice";
+import coursesReducer from "./features/courses/coursesSlise";
 
 export const findEqualItemsById = (array: any, id: any) => {
   const equalItem = array.find((el: any) => el.id === id);
@@ -15,7 +16,8 @@ export const makeStore = () => {
     reducer: {
       flightsReducer,
       userReducer,
-      studentsReducer
+      studentsReducer,
+      coursesReducer
     },
   });
 };

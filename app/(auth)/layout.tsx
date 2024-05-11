@@ -38,7 +38,7 @@ export default function MainLayout({
   }, []);
 
   if (user.isAuth) {
-    return redirect("/air-teach/students");
+    return redirect("/air-teach/courses");
   }
 
   if (isLoading) {

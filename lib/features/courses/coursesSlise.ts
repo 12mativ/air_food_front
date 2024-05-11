@@ -1,3 +1,4 @@
+import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ICourse {
@@ -22,9 +23,14 @@ export const coursesSlice = createSlice({
     addCourses: (state, action: PayloadAction<ICourse[]>) => {
       state.courses = action.payload;
     },
+    addCourse: (state, action: PayloadAction<ICourse>) => {
+      if (!findEqualItemsById(state.courses, action.payload.id)){
+        state.courses.push(action.payload);
+      }
+    },
   },
 });
 
 export default coursesSlice.reducer;
 
-export const { addCourses } = coursesSlice.actions;
+export const { addCourse, addCourses } = coursesSlice.actions;
