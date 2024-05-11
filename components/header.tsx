@@ -19,11 +19,11 @@ const Header = () => {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-full z-10 h-16 bg-stone-300 ">
+        <div className="fixed top-0 left-0 w-full z-10 h-16 bg-neutral-200 ">
             <div className='absolute top-1/2 transform -translate-y-1/2 right-5 text-sky-500 hover:text-sky-600'>
                 <LogOut onClick={handleLogout} size={25} className="cursor-pointer" />
             </div>
-            <div className="flex flex-row absolute top-1/2 transform -translate-y-1/2 right-16 text-sky-500 gap-x-4">
+            <div className="flex flex-row absolute top-1/2 transform -translate-y-1/2 right-16 text-sky-500 gap-x-1">
                 <LiaUserCircleSolid size={25} />
                 {user.email}
             </div>

@@ -163,10 +163,7 @@ const Page = () => {
 
             <div className="mt-20">
                 <form className="hover:text-sky-600">
-                    <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-8 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Search students" />
-                    <div className="absolute top-1/2 transform -translate-y-1/2 left-2 text-gray-400">
-                        <IoIosSearch />
-                    </div>
+                    <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-4 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Поиск студента" />
                 </form>
             </div>
             <div className="flex flex-wrap mx-10 pt-32 pb-20">
