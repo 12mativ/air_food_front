@@ -60,7 +60,6 @@ const formSchema = z.object({
     })
     .optional(),
   birthDate: z.date().optional(),
-
 });
 
 export const EditStudentModal = () => {

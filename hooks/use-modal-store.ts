@@ -1,7 +1,7 @@
 import { IStudent } from "@/lib/features/students/studentsSlice";
 import { create } from "zustand";
 
-export type ModalType = "editStudent"
+export type ModalType = "editStudent" | "editCourse"
 
 export interface ModalData {
   student?: IStudent;

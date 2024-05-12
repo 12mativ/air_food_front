@@ -41,6 +41,10 @@ export default function Layout({
     return redirect("/login");
   }
 
+  if (user.roles.includes("STUDENT")) {
+    return redirect('/air-teach/lk')
+  }
+
   if (isLoading) {
     return <LoaderIndicator />;
   }
