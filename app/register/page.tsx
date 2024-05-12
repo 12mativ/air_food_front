@@ -35,7 +35,6 @@ const Page = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-<<<<<<< HEAD
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   }
@@ -53,7 +52,7 @@ const Page = () => {
       </div>
       <div className=" bg-white text-2xl w-96 p-5 rounded-xl">
         <p className="text-gray-600 font-bold text-base">
-          Авторизация
+          Регистрация
         </p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
@@ -78,11 +77,10 @@ const Page = () => {
               name="password"
               render={({ field }) => (
                 <FormItem className="text-gray-500">
-                  <FormLabel>Пароль</FormLabel>
+                  <FormLabel>Придумайте пароль</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
-                        type={showPassword ? "text" : "password"}
                         className="rounded-xl shadow-lg pl-10"
                         placeholder="Пароль"
                         {...field}
@@ -104,30 +102,15 @@ const Page = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className=" text-gray-600 font-bold rounded-xl shadow-lg hover: bg-gray-100">Войти</Button>
+            <Button type="submit" className=" text-gray-600 font-bold rounded-xl shadow-lg hover: bg-gray-100">Зарегистрироваться</Button>
           </form>
         </Form>
         <div className="flex flex-row text-base py-5 gap-x-3 text-gray-500">
           <p>
-            Нет аккаунта?
+            Уже есть аккаунт?
           </p>
-          <Link href="/register" className="text-sky-500 font-bold hover:text-sky-600">
-            Зарегистрируйтесь
-=======
-        <div className="mb-3">
-          <Link href="/flights">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              Полёты
-            </button>
->>>>>>> 3ead16cdf20e7ddbb6aefa1d748f2f380e7f1cbe
-          </Link>
-        </div>
-
-        <div>
-          <Link href="/air-teach">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              AirTeach
-            </button>
+          <Link href="/" className="text-sky-500 font-bold hover:text-sky-600">
+            Войдите
           </Link>
         </div>
       </div>
