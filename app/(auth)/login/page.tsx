@@ -18,30 +18,50 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { login } from "@/http/user/userAPI";
+import axios, { AxiosError } from "axios";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { makeAuth } from "@/lib/features/user/userSlice";
+import { ErrorAlert } from "@/components/ErrorAlert";
 
 const FormSchema = z.object({
-  username: z.string().email({ message: "Введите корректный адрес электронной почты" }).min(1, { message: "Введите адрес электронной почты" }),
+  email: z.string().email({ message: "Введите корректный адрес электронной почты" }).min(1, { message: "Введите адрес электронной почты" }),
   password: z.string().regex(/^[a-zA-Z0-9~!@#$%^&*()\\-_=+{};:,<.>/?]*$/, { message: "Пароль должен содержать только латинские буквы, цифры или символы" }).min(8, { message: "Пароль должен состоять минимум из 8 символов" }).max(20, { message: "Пароль должен содержать не больше 20 символов" }),
 });
 
 const Page = () => {
+  const [loginError, setLoginError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      email: "",
       password: "",
-      username: "",
     }
   })
 
   const [showPassword, setShowPassword] = useState(false);
 
-<<<<<<< HEAD
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   }
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data)
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    try {
+      setIsSubmitting(true);
+      const response = await login(data.email, data.password)
+      dispatch(makeAuth({email: response.email!, roles: response.roles!, isAuth: true}))
+    } catch (err: AxiosError | any) {
+      if (axios.isAxiosError(err)) {
+        setLoginError(err.response?.data.message);
+      } else {
+        setLoginError(err);
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -51,15 +71,15 @@ const Page = () => {
           AirTeach
         </p>
       </div>
-      <div className=" bg-white text-2xl w-96 p-5 rounded-xl">
+      <div className=" flex flex-col bg-white text-2xl w-96 p-5 rounded-xl gap-y-3">
         <p className="text-gray-600 font-bold text-base">
           Авторизация
         </p>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-2/3 gap-y-3">
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem className="text-gray-500">
                   <FormLabel>Почта</FormLabel>
@@ -104,30 +124,18 @@ const Page = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className=" text-gray-600 font-bold rounded-xl shadow-lg hover: bg-gray-100">Войти</Button>
+            <Button disabled={isSubmitting}  className=" text-gray-600 font-bold rounded-xl shadow-lg hover: bg-gray-100">Войти</Button>
           </form>
         </Form>
+
+        {loginError && <ErrorAlert error={loginError} />}
+
         <div className="flex flex-row text-base py-5 gap-x-3 text-gray-500">
           <p>
             Нет аккаунта?
           </p>
           <Link href="/register" className="text-sky-500 font-bold hover:text-sky-600">
             Зарегистрируйтесь
-=======
-        <div className="mb-3">
-          <Link href="/flights">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              Полёты
-            </button>
->>>>>>> 3ead16cdf20e7ddbb6aefa1d748f2f380e7f1cbe
-          </Link>
-        </div>
-
-        <div>
-          <Link href="/air-teach">
-            <button className="p-3 bg-sky-200 transition rounded-3xl hover:bg-sky-300 text-sky-600 font font-medium">
-              AirTeach
-            </button>
           </Link>
         </div>
       </div>

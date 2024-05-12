@@ -1,10 +1,14 @@
 @tailwind base;
-@tailwind components;
 @tailwind utilities;
-
+@tailwind components;
+    
 html,
 body,
 :root {
   height: 100%;
+<<<<<<< HEAD
   background-color: #EBEBEB;
+=======
+  background-color: #ebebeb;
+>>>>>>> 3ead16cdf20e7ddbb6aefa1d748f2f380e7f1cbe
 }
