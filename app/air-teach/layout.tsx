@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/header";
 import LoaderIndicator from "@/components/Loader";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { check } from "@/http/user/userAPI";
@@ -41,13 +42,16 @@ export default function Layout({
     return redirect("/login");
   }
 
-  if (user.roles.includes("STUDENT")) {
-    return redirect('/air-teach/lk')
-  }
-
   if (isLoading) {
     return <LoaderIndicator />;
   }
 
-  return <>{children}</>;
+  return ( 
+    <>
+      <Header />
+      <div className="mt-20 p-2">
+        {children}
+      </div>
+    </>
+  )
 }

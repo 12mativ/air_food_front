@@ -23,7 +23,6 @@ const PilotCard: React.FC<{ pilot: IPilot }> = ({ pilot }) => (
 const Page = () => {
     const [pilotForSearch, setPilotForSearch] = useState("");
     const [pilots, setPilots] = useState<IPilot[]>([]);
-    console.log(pilots)
 
     const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
         setPilotForSearch(e.target.value);

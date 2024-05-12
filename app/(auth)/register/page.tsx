@@ -68,7 +68,6 @@ const Page = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    console.log(data)
     try {
       setIsSubmitting(true);
       const response = await register({email: data.email, password: data.password, roles: [data.roles as RolesType]});

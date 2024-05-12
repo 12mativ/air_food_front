@@ -41,18 +41,13 @@ import { createCourse } from "@/http/courses/coursesAPI";
 import { addCourse } from "@/lib/features/courses/coursesSlise";
 
 const formSchema = z.object({
-  name: z
-    .string({ required_error: "Обязательно для заполнения." })
-    .max(50, {
-      message: "Название курса не должно превышать 50 символов.",
-    })
-    .optional(),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
+    message: "Название курса не должно превышать 50 символов.",
+  }),
 });
 
 export const CreateCourseModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type } = useModal();
   const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createCourse";
@@ -65,15 +60,18 @@ export const CreateCourseModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createCourse({
-      name: values.name!,
-      startDate: format(values.startDate!, "yyyy-MM-dd"),
-      endDate: format(values.endDate!, "yyyy-MM-dd"),
-    });
+    try {
+      const response = await createCourse({
+        name: values.name!,
+      });
 
-    dispatch(addCourse(response.data));
+      dispatch(addCourse(response.data));
 
-    handleClose();
+      form.reset()
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании курса.");
+    }
   };
 
   const handleClose = () => {
@@ -105,84 +103,6 @@ export const CreateCourseModal = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="startDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Дата начала курса</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "dd.MM.yyyy")
-                          ) : (
-                            <span>Выберите дату</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={() => false}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="endDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Дата окончания курса</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "dd.MM.yyyy")
-                          ) : (
-                            <span>Выберите дату</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={() => false}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}

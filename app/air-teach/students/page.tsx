@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import StudentCard from "@/components/StudentCard";
 import { LiaUserCircleSolid } from "react-icons/lia";
 import Header from "@/components/header";
+import { isStudent } from "@/utils/roles";
 
 const Page = () => {
     const [studentForSearch, setStudentForSearch] = useState("");
@@ -24,12 +25,6 @@ const Page = () => {
 
     const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
         setStudentForSearch(e.target.value);
-    }
-
-    const handleLogout = () => {
-        console.log(123)
-        localStorage.removeItem("token")
-        dispatch(makeAuth({ email: "", roles: [], isAuth: false }))
     }
 
     useEffect(() => {
@@ -153,17 +148,14 @@ const Page = () => {
         return pageButtons;
     };
 
-    if (user.roles.includes("STUDENT")) {
+    if (isStudent(user)) {
         return redirect('/air-teach/lk')
     }
     
 
     return (
         <div className="w-full h-full items-center p-5">
-
-            <Header />
-
-            <div className="mt-20">
+            <div>
                 <form className="hover:text-sky-600">
                     <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-4 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Поиск студента" />
                 </form>

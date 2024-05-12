@@ -3,6 +3,7 @@ import flightsReducer from "./features/flights/flightsSlice";
 import userReducer from "./features/user/userSlice";
 import studentsReducer from "./features/students/studentsSlice";
 import coursesReducer from "./features/courses/coursesSlise";
+import coachesReducer from "./features/coaches/coachesSlice";
 
 export const findEqualItemsById = (array: any, id: any) => {
   const equalItem = array.find((el: any) => el.id === id);
@@ -17,7 +18,8 @@ export const makeStore = () => {
       flightsReducer,
       userReducer,
       studentsReducer,
-      coursesReducer
+      coursesReducer,
+      coachesReducer
     },
   });
 };

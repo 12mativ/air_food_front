@@ -7,21 +7,29 @@ export const getCourses = async (): Promise<AxiosResponse<ICourse[]>> => {
       `/course`
     );
     return response;
-  };
+};
+
+export const getCoursesAdmin = async (): Promise<AxiosResponse<ICourse[]>> => {
+  const response = await $authHost.get(
+    `/course/admin`
+  );
+  return response;
+};
+
+export const getCourse = async ({courseId}: {courseId: string}): Promise<AxiosResponse<ICourse>> => {
+  const response = await $authHost.get(
+    `/course/${courseId}`
+  );
+  return response;
+};
 
 export const createCourse = async ({
   name,
-  startDate,
-  endDate,
 }: {
   name: string;
-  startDate: string;
-  endDate: string;
 }): Promise<AxiosResponse<ICourse>> => {
   const response = await $authHost.post(`/course`, {
-    name,
-    startDate,
-    endDate,
+    name
   });
   return response;
 };

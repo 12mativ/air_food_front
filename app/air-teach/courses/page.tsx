@@ -1,21 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { makeAuth } from "@/lib/features/user/userSlice";
-import { LogOut } from "lucide-react";
-import { LiaUserCircleSolid } from "react-icons/lia";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { addCourse, addCourses, ICourse } from "@/lib/features/courses/coursesSlise";
 import CourseCard from "@/components/CourseCard";
 import Header from "@/components/header";
-import { redirect } from "next/dist/server/api-utils";
+import LoaderIndicator from "@/components/Loader";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { BsPlus } from "react-icons/bs";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
+import { getCourses, getCoursesAdmin } from "@/http/courses/coursesAPI";
+import { addCourses } from "@/lib/features/courses/coursesSlise";
+import { isAdmin, isCourseOrganiser } from "@/utils/roles";
+import Link from "next/link";
 import { useParams } from "next/navigation";
-import { getCourses } from "@/http/courses/coursesAPI";
+import { useEffect, useState } from "react";
+import { BsPlus } from "react-icons/bs";
 
 const Page = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const courses = useAppSelector((state) => state.coursesReducer.courses);
   const user = useAppSelector((state) => state.userReducer.user);
@@ -27,17 +26,27 @@ const Page = () => {
     )
   );
   useEffect(() => {
-    getCourses().then(res => {
-      dispatch(addCourses(res.data))
-    })
+    setIsLoading(true)
+    if (isAdmin(user)) {
+      getCoursesAdmin().then(res => {
+        dispatch(addCourses(res.data))
+      }).finally(() => setIsLoading(false))
+    } else {
+      getCourses().then(res => {
+        dispatch(addCourses(res.data))
+      }).finally(() => setIsLoading(false))
+    }
   },[])
   
+  if (isLoading) {
+    return <LoaderIndicator />
+  }
+
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
-      <Header />
-      {user.roles.includes("ADMIN") && (
+      {isAdmin(user) && (
         <Link href={"/air-teach/students"}>
-          <Button className="mt-20 ml-12 bg-[#7f7f7f] text-white hover:bg-sky-500">
+          <Button className="ml-12 bg-[#7f7f7f] text-white hover:bg-sky-500">
             Все студенты
           </Button>
         </Link>
@@ -46,7 +55,7 @@ const Page = () => {
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
-        {user.roles.includes("COURSE_ORGANISER") || user.roles.includes("ADMIN") && (
+        {(isCourseOrganiser(user) || isAdmin(user)) && (
           <button onClick={() => onOpen("createCourse")} className="flex bg-white rounded-xl p-4 shadow-md m-2 h-40 w-full md:w-[47%] lg:w-[30%] xl:w-[23.5%] 2xl:w-[18.5%] justify-center items-center group">
             <div className="bg-[#ebebeb] group-hover:bg-sky-500 transition-colors rounded-full " >
               <BsPlus size={84} className="text-[#7f7f7f] group-hover:text-white"/>

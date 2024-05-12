@@ -1,11 +1,12 @@
-import { ICourse } from "@/lib/features/courses/coursesSlise";
 import { IStudent } from "@/lib/features/students/studentsSlice";
 import { create } from "zustand";
 
-export type ModalType = "editStudent" | "createCourse"
+export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse"
 
 export interface ModalData {
   student?: IStudent;
+  courseId?: string;
+  eventId?: string;
 }
 
 interface ModalStore {
