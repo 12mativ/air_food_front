@@ -69,12 +69,18 @@ const Page = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap mx-10">
-          {event?.coaches?.map(coach => (
-            <CoachCard coach={coach} />
-          ))}
-        </div>
-        <Button onClick={() => onOpen("addCoachToCourse", {eventId: event?.id})} className="bg-sky-500 hover:bg-sky-400">Добавить тренера на мероприятие</Button>
+        {isAdmin(user) && (
+          <>
+            <p>Тренеры:</p>
+            <div className="flex flex-wrap mx-10">
+              {event?.coaches?.map(coach => (
+                <CoachCard coach={coach} />
+              ))}
+            </div>
+          </>
+        )}
+        
+        {isAdmin(user) && <Button onClick={() => onOpen("addCoachToCourse", {eventId: event?.id})} className="bg-sky-500 hover:bg-sky-400">Добавить тренера на мероприятие</Button>}
       </div>
     </div>
   );

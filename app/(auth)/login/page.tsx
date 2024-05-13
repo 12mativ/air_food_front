@@ -124,7 +124,7 @@ const Page = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={isSubmitting}  className=" text-gray-600 font-bold rounded-xl shadow-lg hover: bg-gray-100">Войти</Button>
+            <Button disabled={isSubmitting}  className=" text-gray-600 font-bold rounded-xl shadow-lg bg--gray-200 hover:bg-gray-100">Войти</Button>
           </form>
         </Form>
 

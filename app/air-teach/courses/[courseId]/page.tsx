@@ -14,26 +14,28 @@ import { useEffect } from "react";
 
 const Page = () => {
   const { onOpen } = useModal();
-  const user = useAppSelector(state => state.userReducer.user)
+  const user = useAppSelector((state) => state.userReducer.user);
   const dispatch = useAppDispatch();
   const params = useParams();
   const course = useAppSelector((state) =>
-    state.coursesReducer.courses.find(
-      (course) => course.id === params.courseId
-    )
+    state.coursesReducer.courses.find((course) => course.id === params.courseId)
   );
 
   useEffect(() => {
-    getStudents({ studentForSearch: "" }).then((res) => {
-      dispatch(addStudents(res.data.students));
-    });
+    if (isAdmin(user)) {
+      getStudents({ studentForSearch: "" }).then((res) => {
+        dispatch(addStudents(res.data.students));
+      });
+    }
   }, []);
 
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="flex flex-col items-center gap-y-11">
         <div className="flex items-center gap-x-3">
-          <p className="text-3xl font-bold text-sky-500">Курс "{course?.name}"</p>
+          <p className="text-3xl font-bold text-sky-500">
+            Курс "{course?.name}"
+          </p>
           {/* <Pencil className="text-sky-500 cursor-pointer" onClick={() => {
             console.log('123')
             onOpen("editStudent", {student: student})
@@ -41,27 +43,56 @@ const Page = () => {
         </div>
         <div className="flex flex-row items-center gap-x-20">
           <div className="flex flex-col gap-y-3 text-gray-500 font-semibold">
-            <p>Дата начала: {course?.startDate ? formateComplexDate(course.startDate) : "Не задано"}</p>
-            <p>Дата завершения: {course?.endDate ? formateComplexDate(course.endDate) : "Не задано"}</p>
+            <p>
+              Дата начала:{" "}
+              {course?.startDate
+                ? formateComplexDate(course.startDate)
+                : "Не задано"}
+            </p>
+            <p>
+              Дата завершения:{" "}
+              {course?.endDate
+                ? formateComplexDate(course.endDate)
+                : "Не задано"}
+            </p>
             <p>Мероприятия:</p>
             <div className="flex flex-wrap w-full mx-5 md:mx-10">
-              {course?.events.map((event) => (
+              {course?.events?.map((event) => (
                 <EventCard event={event} />
               ))}
             </div>
-            <p>Студенты:</p>
-            <div className="flex flex-wrap w-full mx-5 md:mx-10">
-              {course?.students.map((student) => (
-                <StudentCard student={student} />
-              ))}
-            </div>
+            {isAdmin(user) && (
+              <>
+                <p>Студенты:</p>
+                <div className="flex flex-wrap w-full mx-5 md:mx-10">
+                  {course?.students?.map((student) => (
+                    <StudentCard student={student} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
-        <div className="flex flex-col gap-y-2"> 
-        {(isAdmin(user) || isCourseOrganiser(user)) && <Button className="bg-sky-500 hover:bg-sky-400" onClick={() => onOpen("createEvent", {courseId: course!.id})}>Добавить мероприятие на курс</Button>}
-        {(isAdmin(user)) && <Button className="bg-sky-500 hover:bg-sky-400" onClick={() => onOpen("addStudentToCourse", {courseId: course!.id})}>Добавить студента на курс</Button>}
+        <div className="flex flex-col gap-y-2">
+          {(isAdmin(user) || isCourseOrganiser(user)) && (
+            <Button
+              className="bg-sky-500 hover:bg-sky-400"
+              onClick={() => onOpen("createEvent", { courseId: course!.id })}
+            >
+              Добавить мероприятие на курс
+            </Button>
+          )}
+          {isAdmin(user) && (
+            <Button
+              className="bg-sky-500 hover:bg-sky-400"
+              onClick={() =>
+                onOpen("addStudentToCourse", { courseId: course!.id })
+              }
+            >
+              Добавить студента на курс
+            </Button>
+          )}
         </div>
-
       </div>
     </div>
   );
