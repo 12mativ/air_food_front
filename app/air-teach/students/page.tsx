@@ -194,15 +194,14 @@ const Page = () => {
           </Button>
         </Link>
       )}
-      <div className="mt-4 mx-10">
-        <form className="hover:text-sky-600">
-          <input
-            className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-4 md:h-8"
-            type="text"
-            onChange={(e) => handleInputChange(e)}
-            placeholder="Поиск студента"
-          />
-        </form>
+      <div className="mt-4 mx-10 relative">
+        <input
+          className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8"
+          type="text"
+          onChange={(e) => handleInputChange(e)}
+          placeholder="Поиск студента"
+        />
+        <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
       </div>
       <div className="flex flex-wrap mx-10 pt-2 pb-20">
         {students.map((student: IStudent) => (
