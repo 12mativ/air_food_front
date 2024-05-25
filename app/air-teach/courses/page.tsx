@@ -46,8 +46,15 @@ const Page = () => {
     <div className="w-full h-full items-center bg-[#ebebeb]">
       {isAdmin(user) && (
         <Link href={"/air-teach/students"}>
-          <Button className="ml-12 bg-[#7f7f7f] text-white hover:bg-sky-500">
+          <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
             Все студенты
+          </Button>
+        </Link>
+      )}
+      {isAdmin(user) && (
+        <Link href={"/air-teach/courses"}>
+          <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+            Все курсы
           </Button>
         </Link>
       )}
