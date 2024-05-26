@@ -19,7 +19,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
 
   const isCoursesPage = courseIdString !== undefined;
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) => {
+    e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+    e.stopPropagation(); // Предотвращаем всплытие события
     if (courseIdString) {
       onOpen("removeStudentFromCourse", { studentId: student.id, courseId: courseIdString });
     }
@@ -32,11 +34,12 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
         className="relative hover:scale-[1.01] transition bg-white rounded-xl p-4 shadow-md m-2 h-40 w-full md:w-[47%] lg:w-[30%] xl:w-[23.5%] 2xl:w-[18.5%]"
       >
         {isCoursesPage && (
-          <X
-            size={20}
-            className="absolute right-2 text-red-500 hover:scale-[1.1] transition cursor-pointer"
-            onClick={handleDelete}
-          />
+          <div onClick={handleDelete}>
+            <X
+              size={20}
+              className="absolute right-2 text-red-500 hover:scale-[1.1] transition cursor-pointer"
+            />
+          </div>
         )}
         <p className="text-l font-semibold">{student.email}</p>
         <p className="text-sm">
