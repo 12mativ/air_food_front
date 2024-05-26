@@ -6,7 +6,7 @@ import { CreateCourseModal } from "../modals/create-course-modal";
 import { CreateEventModal } from "../modals/create-event-modal";
 import { AddStudentToCourseModal } from "../modals/add-student-to-course-modal";
 import { AddCoachToCourseModal } from "../modals/add-coach-to-event-modal";
-import { DeleteStudentModal } from "../modals/delete-student-modal";
+import { DeleteStudentFromCourseModal } from "../modals/delete-student-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -22,7 +22,7 @@ export function ModalProvider() {
   return (
     <>
       <EditStudentModal />
-      <DeleteStudentModal />
+      <DeleteStudentFromCourseModal />
       <CreateCourseModal />
       <CreateEventModal />
       <AddStudentToCourseModal />

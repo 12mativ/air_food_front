@@ -189,7 +189,7 @@ const Page = () => {
       )}
       {isAdmin(user) && (
         <Link href={"/air-teach/courses"}>
-          <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+          <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
             Все курсы
           </Button>
         </Link>
@@ -204,9 +204,17 @@ const Page = () => {
         <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
       </div>
       <div className="flex flex-wrap mx-10 pt-2 pb-20">
-        {students.map((student: IStudent) => (
-          <StudentCard key={student.id} student={student} />
-        ))}
+        {students.length > 0 ? (
+          students.map((student: IStudent) => (
+            <StudentCard key={student.id} student={student} />
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-full w-full">
+            <p className="text-center text-gray-500 text-lg">
+              Студенты не найдены
+            </p>
+          </div>
+        )}
       </div>
       <div className="fixed bottom-0 left-0 w-full p-4 shadow-lg bg-[#ebebeb]">
         <div className="flex justify-center">{renderPageButtons()}</div>

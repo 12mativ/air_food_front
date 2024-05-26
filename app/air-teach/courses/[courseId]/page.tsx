@@ -31,7 +31,7 @@ const Page = () => {
 
   return (
     <div className="flex justify-center items-center w-full h-full">
-      <div className="flex flex-col items-center gap-y-11">
+      <div className="flex flex-col w-full justify-center items-center gap-y-11">
         <div className="flex items-center gap-x-3">
           <p className="text-3xl font-bold text-sky-500">
             Курс "{course?.name}"
@@ -41,8 +41,8 @@ const Page = () => {
             onOpen("editStudent", {student: student})
             }} /> */}
         </div>
-        <div className="flex flex-row items-center gap-x-20">
-          <div className="flex flex-col gap-y-3 text-gray-500 font-semibold">
+        <div className="flex flex-row w-full items-center gap-x-20">
+          <div className="flex flex-col gap-y-3 w-full justify-center items-center text-gray-500 font-semibold">
             <p>
               Дата начала:{" "}
               {course?.startDate
@@ -56,7 +56,7 @@ const Page = () => {
                 : "Не задано"}
             </p>
             <p>Мероприятия:</p>
-            <div className="flex flex-wrap w-full mx-5 md:mx-10">
+            <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
               {course?.events?.map((event) => (
                 <EventCard event={event} />
               ))}
@@ -64,7 +64,7 @@ const Page = () => {
             {isAdmin(user) && (
               <>
                 <p>Студенты:</p>
-                <div className="flex flex-wrap w-full mx-5 md:mx-10">
+                <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
                   {course?.students?.map((student) => (
                     <StudentCard student={student} />
                   ))}

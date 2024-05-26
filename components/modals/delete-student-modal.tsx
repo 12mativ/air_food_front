@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteStudent } from '@/lib/features/students/studentsSlice';
+import { removeStudentFromCourseRedux } from '@/lib/features/courses/coursesSlise';
 import { useModal } from "@/hooks/use-modal-store";
 import {
   Dialog,
@@ -13,23 +13,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { ErrorAlert } from "../ErrorAlert";
 
-export const DeleteStudentModal = () => {
+export const DeleteStudentFromCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  const isModalOpen = isOpen && type === "deleteStudent";
+  const isModalOpen = isOpen && type === "removeStudentFromCourse";
 
   const handleDelete = () => {
-    if (data.studentId) {
+    if (data.studentId && data.courseId) {
       try {
-        dispatch(deleteStudent(data.studentId));
+        dispatch(removeStudentFromCourseRedux({ studentId: data.studentId, courseId: data.courseId }));
         onClose();
       } catch (error) {
-        setError("Произошла ошибка при удалении студента.");
+        setError("Произошла ошибка при удалении студента с курса.");
       }
     } else {
-      setError("Не указан идентификатор студента для удаления.");
+      setError("Не указан идентификатор студента или курса для удаления.");
     }
   };
 
@@ -37,15 +37,15 @@ export const DeleteStudentModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Удаление обучающегося</DialogTitle>
+          <DialogTitle>Удаление студента с курса</DialogTitle>
           <DialogDescription>
-            Вы уверены, что хотите удалить этого студента?
+            Вы уверены, что хотите удалить этого студента с курса?
           </DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter>
-          <Button className = "bg-red-700 hover:bg-red-900" onClick={handleDelete}>
-            Удалить
+          <Button className="bg-red-700 hover:bg-red-900" onClick={handleDelete}>
+            Удалить с курса
           </Button>
           <Button variant="outline" onClick={onClose}>
             Отмена

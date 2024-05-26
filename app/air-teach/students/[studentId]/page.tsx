@@ -1,16 +1,12 @@
 "use client";
 
 import React from "react";
-
-import { DeleteStudentModal } from "@/components/modals/delete-student-modal";
 import { IoPersonSharp } from "react-icons/io5";
 import { useAppSelector } from "@/hooks/redux-hooks";
 import { useParams } from "next/navigation";
-import Header from "@/components/header";
 import { Pencil } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { formateComplexDate } from "@/utils/formateComplexDate";
-import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const { onOpen } = useModal();
@@ -51,16 +47,6 @@ const Page = () => {
             <p>Компетенция: Не задано</p>
           </div>
         </div>
-        {student && (
-          <Button
-            className = "bg-red-700 hover:bg-red-900" onClick={() => {
-              onOpen("deleteStudent", { studentId: student.id });
-            }}
-          >
-            Удалить студента
-          </Button>
-        )}
-        <DeleteStudentModal />
       </div>
     </div>
   );
