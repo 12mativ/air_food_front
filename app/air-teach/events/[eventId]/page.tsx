@@ -30,7 +30,7 @@ const Page = () => {
         setEvent(event)
       }
     }))
-  }, [])
+  }, [courses])
 
   useEffect(() => {
     if (isAdmin(user)) {
