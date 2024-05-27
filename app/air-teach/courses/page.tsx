@@ -1,6 +1,6 @@
 "use client";
 import CourseCard from "@/components/CourseCard";
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import LoaderIndicator from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
@@ -26,20 +26,24 @@ const Page = () => {
     )
   );
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (isAdmin(user)) {
-      getCoursesAdmin().then(res => {
-        dispatch(addCourses(res.data))
-      }).finally(() => setIsLoading(false))
+      getCoursesAdmin()
+        .then((res) => {
+          dispatch(addCourses(res.data));
+        })
+        .finally(() => setIsLoading(false));
     } else {
-      getCourses().then(res => {
-        dispatch(addCourses(res.data))
-      }).finally(() => setIsLoading(false))
+      getCourses()
+        .then((res) => {
+          dispatch(addCourses(res.data));
+        })
+        .finally(() => setIsLoading(false));
     }
-  },[])
-  
+  }, []);
+
   if (isLoading) {
-    return <LoaderIndicator />
+    return <LoaderIndicator />;
   }
 
   return (
@@ -56,9 +60,15 @@ const Page = () => {
           <CourseCard key={course.id} course={course} />
         ))}
         {(isCourseOrganiser(user) || isAdmin(user)) && (
-          <button onClick={() => onOpen("createCourse")} className="flex bg-white rounded-xl p-4 shadow-md m-2 h-40 w-full md:w-[47%] lg:w-[30%] xl:w-[23.5%] 2xl:w-[18.5%] justify-center items-center group">
-            <div className="bg-[#ebebeb] group-hover:bg-sky-500 transition-colors rounded-full " >
-              <BsPlus size={84} className="text-[#7f7f7f] group-hover:text-white"/>
+          <button
+            onClick={() => onOpen("createCourse")}
+            className="flex bg-white rounded-xl p-4 shadow-md m-2 h-40 w-full md:w-[47%] lg:w-[30%] xl:w-[23.5%] 2xl:w-[18.5%] justify-center items-center group"
+          >
+            <div className="bg-[#ebebeb] group-hover:bg-sky-500 transition-colors rounded-full ">
+              <BsPlus
+                size={84}
+                className="text-[#7f7f7f] group-hover:text-white"
+              />
             </div>
           </button>
         )}

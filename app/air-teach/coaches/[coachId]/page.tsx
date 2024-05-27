@@ -3,7 +3,7 @@
 import { IoPersonSharp } from "react-icons/io5";
 import { useAppSelector } from "@/hooks/redux-hooks";
 import { useParams } from "next/navigation";
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import { Pencil } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { formateComplexDate } from "@/utils/formateComplexDate";
@@ -12,9 +12,7 @@ const Page = () => {
   const { onOpen } = useModal();
   const params = useParams();
   const coach = useAppSelector((state) =>
-    state.coachesReducer.coaches.find(
-      (coach) => coach.id === params.coachId
-    )
+    state.coachesReducer.coaches.find((coach) => coach.id === params.coachId)
   );
 
   return (
@@ -31,9 +29,14 @@ const Page = () => {
           <div className="flex flex-col gap-y-3 text-gray-500 font-semibold">
             <p>Фамилия: {coach?.lastName ? coach.lastName : "Не задано"}</p>
             <p>Имя: {coach?.firstName ? coach.firstName : "Не задано"}</p>
-            <p>Отчество: {coach?.middleName ? coach.middleName : "Не задано"}</p>
             <p>
-              Дата рождения: {coach?.birthDate ? formateComplexDate(coach.birthDate) : "Не задано"}
+              Отчество: {coach?.middleName ? coach.middleName : "Не задано"}
+            </p>
+            <p>
+              Дата рождения:{" "}
+              {coach?.birthDate
+                ? formateComplexDate(coach.birthDate)
+                : "Не задано"}
             </p>
             <p>Почта: {coach?.email}</p>
             <p>Компетенция: Не задано</p>

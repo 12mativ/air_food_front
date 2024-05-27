@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import flightsReducer from "./features/flights/flightsSlice";
 import userReducer from "./features/user/userSlice";
 import studentsReducer from "./features/students/studentsSlice";
 import coursesReducer from "./features/courses/coursesSlise";
@@ -15,7 +14,6 @@ export const findEqualItemsById = (array: any, id: any) => {
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      flightsReducer,
       userReducer,
       studentsReducer,
       coursesReducer,

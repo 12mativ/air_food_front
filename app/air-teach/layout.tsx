@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import LoaderIndicator from "@/components/Loader";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { check } from "@/http/user/userAPI";
@@ -9,11 +9,7 @@ import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userReducer.user);
@@ -46,12 +42,10 @@ export default function Layout({
     return <LoaderIndicator />;
   }
 
-  return ( 
+  return (
     <>
       <Header />
-      <div className="mt-20 p-2">
-        {children}
-      </div>
+      <div className="mt-20 p-2">{children}</div>
     </>
-  )
+  );
 }
