@@ -10,7 +10,8 @@ const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => (
   >
     <p className="text-l font-semibold">{course.name}</p>
     <p className="text-sm">
-      {formateComplexDate(course.startDate) || ""} - {formateComplexDate(course.endDate) || ""}
+      {formateComplexDate(course.startDate) || ""} -{" "}
+      {formateComplexDate(course.endDate) || ""}
     </p>
   </Link>
 );

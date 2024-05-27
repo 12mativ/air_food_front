@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import axios from "axios";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -11,7 +11,6 @@ import { LogOut } from "lucide-react";
 import { redirect } from "next/navigation";
 import StudentCard from "@/components/StudentCard";
 import { LiaUserCircleSolid } from "react-icons/lia";
-import Header from "@/components/Header";
 import { isStudent } from "@/utils/roles";
 
 const Page = () => {
@@ -172,32 +171,30 @@ const Page = () => {
     return pageButtons;
   };
 
-  if (isStudent(user)) {
-    return redirect("/air-teach/lk");
-  }
+    if (isStudent(user)) {
+        return redirect('/air-teach/lk')
+    }
+    
 
-  return (
-    <div className="w-full h-full items-center p-5">
-      <div>
-        <form className="hover:text-sky-600">
-          <input
-            className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-4 md:h-8"
-            type="text"
-            onChange={(e) => handleInputChange(e)}
-            placeholder="Поиск студента"
-          />
-        </form>
-      </div>
-      <div className="flex flex-wrap mx-10 pt-32 pb-20">
-        {students.map((student: IStudent) => (
-          <StudentCard key={student.id} student={student} />
-        ))}
-      </div>
-      <div className="fixed bottom-0 left-0 w-full p-4 shadow-lg bg-[#ebebeb]">
-        <div className="flex justify-center">{renderPageButtons()}</div>
-      </div>
-    </div>
-  );
+    return (
+        <div className="w-full h-full items-center p-5">
+            <div>
+                <form className="hover:text-sky-600">
+                    <input className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-4 md:h-8" type="text" onChange={(e) => handleInputChange(e)} placeholder="Поиск студента" />
+                </form>
+            </div>
+            <div className="flex flex-wrap mx-10 pt-32 pb-20">
+                {students.map((student: IStudent) => (
+                    <StudentCard key={student.id} student={student} />
+                ))}
+            </div>
+            <div className="fixed bottom-0 left-0 w-full p-4 shadow-lg bg-[#ebebeb]">
+                <div className="flex justify-center">
+                    {renderPageButtons()}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Page;

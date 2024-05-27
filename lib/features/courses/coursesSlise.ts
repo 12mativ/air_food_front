@@ -93,6 +93,16 @@ export const coursesSlice = createSlice({
         }
       });
     },
+    removeStudentFromCourseRedux: (state, action) => {
+      const { studentId, courseId } = action.payload;
+      const courseIndex = state.courses.findIndex(course => course.id === courseId);
+
+      if (courseIndex !== -1) {
+        state.courses[courseIndex].students = state.courses[courseIndex].students.filter(
+          student => student.id !== studentId
+        );
+      }
+    },
   },
 });
 
@@ -104,5 +114,6 @@ export const {
   addEvent,
   addStudentToCourseRedux,
   updateCourse,
-  updateEvent
+  updateEvent,
+  removeStudentFromCourseRedux
 } = coursesSlice.actions;

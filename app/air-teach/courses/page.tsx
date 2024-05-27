@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { getCourses, getCoursesAdmin } from "@/http/courses/coursesAPI";
 import { addCourses } from "@/lib/features/courses/coursesSlise";
-import { isAdmin, isCourseOrganiser } from "@/utils/roles";
+import { isAdmin, isCourseOrganiser, isCoach, isStudent } from "@/utils/roles";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -50,15 +50,32 @@ const Page = () => {
     <div className="w-full h-full items-center bg-[#ebebeb]">
       {isAdmin(user) && (
         <Link href={"/air-teach/students"}>
-          <Button className="ml-12 bg-[#7f7f7f] text-white hover:bg-sky-500">
+          <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
             Все студенты
           </Button>
         </Link>
       )}
+      {isAdmin(user) && (
+        <Link href={"/air-teach/courses"}>
+          <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+            Все курсы
+          </Button>
+        </Link>
+      )}
       <div className="flex flex-wrap mx-10 mt-10 pt-10">
-        {courses.map((course) => (
+        {courses.length > 0 ? (
+          courses.map((course) => (
           <CourseCard key={course.id} course={course} />
-        ))}
+          ))
+        ) : (
+          (isStudent(user) || isCoach(user)) && (
+            <div className="flex items-center justify-center h-full w-full">
+              <p className="text-center text-gray-500 text-lg">
+                Курсы не найдены
+              </p>
+            </div>
+          )
+        )}
         {(isCourseOrganiser(user) || isAdmin(user)) && (
           <button
             onClick={() => onOpen("createCourse")}
