@@ -12,11 +12,11 @@ export interface ICoach {
   events: IEvent[]
 }
 
-interface IStudentsState {
+interface ICoachesState {
   coaches: ICoach[];
 }
 
-const initialState: IStudentsState = {
+const initialState: ICoachesState = {
   coaches: [],
 };
 

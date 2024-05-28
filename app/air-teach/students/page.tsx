@@ -183,6 +183,13 @@ const Page = () => {
         </Link>
       )}
       {isAdmin(user) && (
+        <Link href={"/air-teach/coaches"}>
+          <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500">
+            Все тренеры
+          </Button>
+        </Link>
+      )}
+      {isAdmin(user) && (
         <Link href={"/air-teach/courses"}>
           <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
             Все курсы
