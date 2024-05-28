@@ -22,7 +22,7 @@ const Page = () => {
   const coaches = useAppSelector((state) => state.coachesReducer.coaches);
   const user = useAppSelector((state) => state.userReducer.user);
   const dispatch = useAppDispatch();
-  const limit = 1;
+  const limit = 8;
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setCoachForSearch(e.target.value);
