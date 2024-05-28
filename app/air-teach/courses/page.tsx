@@ -69,7 +69,7 @@ const Page = () => {
           </Button>
         </Link>
       )}
-      <div className="flex flex-wrap mx-10 mt-10 pt-10">
+      <div className="flex flex-wrap mx-10 mt-6 pt-10">
         {courses.length > 0 ? (
           courses.map((course) => (
           <CourseCard key={course.id} course={course} />

@@ -32,6 +32,10 @@ const initialState: ICoursesState = {
   courses: [],
 };
 
+const sortEventsByStartDate = (events: IEvent[]) => {
+  return events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+};
+
 export const coursesSlice = createSlice({
   name: "courses",
   initialState: initialState,
@@ -45,17 +49,16 @@ export const coursesSlice = createSlice({
       }
     },
     updateCourse: (state, action: PayloadAction<ICourse>) => {
-      const {name, startDate, endDate, students, events} = action.payload;
+      const { name, startDate, endDate, students, events } = action.payload;
       state.courses.forEach(course => {
         if (course.id === action.payload.id) {
-          course.name = name
-          course.startDate = startDate
-          course.endDate = endDate
-          course.endDate = endDate
-          course.students = students
-          course.events = events
+          course.name = name;
+          course.startDate = startDate;
+          course.endDate = endDate;
+          course.students = students;
+          course.events = sortEventsByStartDate(events);
         }
-      })
+      });
     },
     addEvent: (state, action: PayloadAction<IEvent>) => {
       state.courses.forEach((course) => {
@@ -67,17 +70,22 @@ export const coursesSlice = createSlice({
       });
     },
     updateEvent: (state, action: PayloadAction<IEvent>) => {
-      const {name, startDate, endDate, coaches} = action.payload;
+      const { name, startDate, endDate, coaches } = action.payload;
       state.courses.forEach((course) => {
         if (course.id === action.payload.courseId) {
-          course.events.forEach(event => {
+          course.events = course.events.map(event => {
             if (event.id === action.payload.id) {
-              event.name = name
-              event.startDate = startDate
-              event.endDate = endDate
-              event.coaches = coaches
+              return {
+                ...event,
+                name,
+                startDate,
+                endDate,
+                coaches
+              };
             }
-          })
+            return event;
+          });
+          course.events = sortEventsByStartDate(course.events); 
         }
       });
     },
