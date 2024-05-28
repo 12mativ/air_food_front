@@ -27,9 +27,20 @@ export const coachesSlice = createSlice({
     addCoaches: (state, action: PayloadAction<ICoach[]>) => {
       state.coaches = action.payload;
     },
+    updateCoach: (state, action: PayloadAction<ICoach>) => {
+      state.coaches.forEach((coach) => {
+        if (coach.id === action.payload.id) {
+          const { firstName, lastName, middleName, birthDate } = action.payload;
+          coach.firstName = firstName;
+          coach.lastName = lastName;
+          coach.middleName = middleName;
+          coach.birthDate = birthDate;
+        }
+      });
+    },
   },
 });
 
 export default coachesSlice.reducer;
 
-export const { addCoaches } = coachesSlice.actions;
+export const { addCoaches, updateCoach } = coachesSlice.actions;

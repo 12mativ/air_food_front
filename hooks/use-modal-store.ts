@@ -1,13 +1,16 @@
+import { ICoach } from "@/lib/features/coaches/coachesSlice";
 import { IStudent } from "@/lib/features/students/studentsSlice";
 import { create } from "zustand";
 
-export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse";
+export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach";
 
 export interface ModalData {
   student?: IStudent;
   studentId? : string;
   courseId?: string;
   eventId?: string;
+  coach?: ICoach;
+  coachId?: string;
 }
 
 interface ModalStore {

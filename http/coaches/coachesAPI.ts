@@ -21,3 +21,18 @@ export const getCoaches = async ({
   );
   return response;
 };
+
+export const editCoach = async ({
+  id,
+  firstName,
+  lastName,
+  middleName
+}: {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+}): Promise<AxiosResponse<ICoach>> => {
+  const response = await $authHost.patch(`/coach/${id}`, {firstName, lastName, middleName});
+  return response; 
+};
