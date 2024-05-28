@@ -12,34 +12,61 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import LoaderIndicator from "@/components/Loader";
 import CoachCard from "@/components/CoachCard";
+import Pagination from "@/components/Pagination";
 
 const Page = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const dispatch = useAppDispatch();
-    const coaches = useAppSelector((state) => state.coachesReducer.coaches);
-    const user = useAppSelector((state) => state.userReducer.user);
-    const { onOpen } = useModal();
-    const params = useParams();
-    useEffect(() => {
-      setIsLoading(true);
-      if (isAdmin(user)) {
-        getCoaches()
-          .then((res) => {
-            dispatch(addCoaches(res.data));
-          })
-          .finally(() => setIsLoading(false));
-      } else {
-        getCoaches()
-          .then((res) => {
-            dispatch(addCoaches(res.data));
-          })
-          .finally(() => setIsLoading(false));
-      }
-    }, []);
-  
-    if (isLoading) {
-      return <LoaderIndicator />;
-    }
+  const [isLoading, setIsLoading] = useState(false);
+  const [coachForSearch, setCoachForSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const coaches = useAppSelector((state) => state.coachesReducer.coaches);
+  const user = useAppSelector((state) => state.userReducer.user);
+  const dispatch = useAppDispatch();
+  const limit = 1;
+
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    setCoachForSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getCoaches({
+        coachForSearch: coachForSearch,
+        page: currentPage,
+        limit: limit,
+      });
+      dispatch(addCoaches(response.data.coaches));
+      setTotalPages(Math.ceil(response.data.coachesTotalAmount / limit));
+    };
+
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [coachForSearch]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getCoaches({
+        coachForSearch: coachForSearch,
+        page: currentPage,
+        limit: limit,
+      });
+      dispatch(addCoaches(response.data.coaches));
+      setTotalPages(Math.ceil(response.data.coachesTotalAmount / limit));
+    };
+
+    fetchData();
+  }, [currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  if (isLoading) {
+    return <LoaderIndicator />;
+  }
 
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
@@ -64,7 +91,16 @@ const Page = () => {
           </Button>
         </Link>
       )}
-      <div className="flex flex-wrap mx-10 pt-10 mt-10">
+      <div className="mt-4 mx-10 relative">
+        <input
+          className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8"
+          type="text"
+          onChange={(e) => handleInputChange(e)}
+          placeholder="Поиск тренера"
+        />
+        <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
+      </div>
+      <div className="flex flex-wrap mx-10 pt-2 pb-20">
         {coaches.length > 0 ? (
           coaches.map((coach: ICoach) => (
             <CoachCard key={coach.id} coach={coach} />
@@ -76,6 +112,15 @@ const Page = () => {
             </p>
           </div>
         )}
+      </div>
+      <div className="fixed bottom-0 left-0 w-full p-4 shadow-lg bg-[#ebebeb]">
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );
