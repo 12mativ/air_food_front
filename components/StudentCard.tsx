@@ -23,7 +23,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
     e.preventDefault(); // Предотвращаем стандартное поведение ссылки
     e.stopPropagation(); // Предотвращаем всплытие события
     if (courseIdString) {
-      onOpen("removeStudentFromCourse", { studentId: student.id, courseId: courseIdString });
+      onOpen("removeStudentFromCourse", { studentId: student.id, courseId: courseIdString, studentEmail: student.email});
     }
   };
 

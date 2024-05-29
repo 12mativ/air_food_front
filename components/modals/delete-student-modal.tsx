@@ -39,7 +39,7 @@ export const DeleteStudentFromCourseModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Удаление студента с курса</DialogTitle>
           <DialogDescription>
-            Вы уверены, что хотите удалить этого студента с курса?
+            Вы уверены, что хотите удалить студента (<strong>{data.studentEmail}</strong>) с курса?
           </DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>

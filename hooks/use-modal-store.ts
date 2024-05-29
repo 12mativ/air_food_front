@@ -6,6 +6,7 @@ export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStu
 
 export interface ModalData {
   student?: IStudent;
+  studentEmail?: string;
   studentId? : string;
   courseId?: string;
   eventId?: string;
