@@ -7,7 +7,7 @@ import { ModalProvider } from '@/components/providers/modal-provider'
 const font = Open_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AirFood',
+  title: 'AirTeach',
   description: 'Try our application for airlines food menu generation',
 }
 
