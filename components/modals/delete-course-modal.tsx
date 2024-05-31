@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeStudentFromCourseRedux } from '@/lib/features/courses/coursesSlise';
+import { removeCourseRedux } from '@/lib/features/courses/coursesSlise';
 import { useModal } from "@/hooks/use-modal-store";
 import {
   Dialog,
@@ -12,26 +12,26 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ErrorAlert } from "../ErrorAlert";
-import { deleteStudentFromCourse } from '@/http/courses/coursesAPI';
+import { deleteCourse } from '@/http/courses/coursesAPI'; // Предполагается, что у вас есть API для удаления курса
 
-export const DeleteStudentFromCourseModal = () => {
+export const DeleteCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  const isModalOpen = isOpen && type === "removeStudentFromCourse";
+  const isModalOpen = isOpen && type === "removeCourse";
 
   const handleDelete = async () => {
-    if (data.studentId && data.courseId) {
+    if (data.courseId) {
       try {
-        dispatch(removeStudentFromCourseRedux({ studentId: data.studentId, courseId: data.courseId }));
-        await deleteStudentFromCourse({ studentId: data.studentId, courseId: data.courseId });
+        await deleteCourse({ courseId: data.courseId }); // Отправка запроса на удаление курса
+        dispatch(removeCourseRedux(data.courseId)); // Удаление курса из Redux
         onClose();
       } catch (error) {
-        setError("Произошла ошибка при удалении студента с курса.");
+        setError("Произошла ошибка при удалении курса.");
       }
     } else {
-      setError("Не указан идентификатор студента или курса для удаления.");
+      setError("Не указан идентификатор курса для удаления.");
     }
   };
 
@@ -39,15 +39,15 @@ export const DeleteStudentFromCourseModal = () => {
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Удаление студента с курса</DialogTitle>
+          <DialogTitle>Удаление курса</DialogTitle>
           <DialogDescription>
-            Вы уверены, что хотите удалить студента (<strong>{data.studentEmail}</strong>) с курса?
+            Вы уверены, что хотите удалить курс?
           </DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter>
           <Button className="bg-red-700 hover:bg-red-900" onClick={handleDelete}>
-            Удалить с курса
+            Удалить курс
           </Button>
           <Button variant="outline" onClick={onClose}>
             Отмена

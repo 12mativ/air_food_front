@@ -111,6 +111,10 @@ export const coursesSlice = createSlice({
         );
       }
     },
+    removeCourseRedux: (state, action: PayloadAction<string>) => {
+      const courseId = action.payload;
+      state.courses = state.courses.filter(course => course.id !== courseId);
+    },
   },
 });
 
@@ -123,5 +127,6 @@ export const {
   addStudentToCourseRedux,
   updateCourse,
   updateEvent,
-  removeStudentFromCourseRedux
+  removeStudentFromCourseRedux,
+  removeCourseRedux
 } = coursesSlice.actions;
