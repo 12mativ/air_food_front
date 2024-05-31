@@ -66,7 +66,7 @@ const Page = () => {
                 <p>Студенты:</p>
                 <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
                   {course?.students?.map((student) => (
-                    <StudentCard student={student} />
+                    <StudentCard key={student.id} student={student} />
                   ))}
                 </div>
               </>

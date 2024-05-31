@@ -37,6 +37,7 @@ import { formateComplexDate } from "@/utils/formateComplexDate";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { ErrorAlert } from "../ErrorAlert";
+import { addStudentToCourse } from "@/http/courses/coursesAPI";
 
 const formSchema = z.object({
   studentId: z.string({ required_error: "Выберите студента для добавления." }),
@@ -58,12 +59,20 @@ export const AddStudentToCourseModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await editStudent({
-        id: values.studentId,
+      const student = students.find(
+        (student) => student.id === values.studentId
+      );
+
+      if (!student) {
+        throw new Error("Студент не найден");
+      }
+
+      const response = await addStudentToCourse({
         courseId: data.courseId!,
+        studentId: values.studentId,
       });
-      const payload = { ...response.data, courseId: data.courseId! };
-      dispatch(addStudentToCourseRedux(payload));
+
+      dispatch(addStudentToCourseRedux({ student, courseId: data.courseId! }));
 
       form.reset();
       handleClose();
@@ -74,6 +83,7 @@ export const AddStudentToCourseModal = () => {
 
   const handleClose = () => {
     form.reset();
+    setError("");
     onClose();
   };
 
@@ -104,7 +114,7 @@ export const AddStudentToCourseModal = () => {
                     </FormControl>
                     <SelectContent>
                       {students.map((student) => (
-                        <SelectItem value={student.id}>
+                        <SelectItem key={student.id} value={student.id}>
                           <p>
                             {student.lastName ? student.lastName : ""}{" "}
                             {student.firstName
@@ -113,7 +123,9 @@ export const AddStudentToCourseModal = () => {
                             {student.middleName
                               ? `${student.middleName[0]}.`
                               : ""}
-                            {student.birthDate ? ` (${formateComplexDate(student.birthDate)})` : ""} 
+                            {student.birthDate
+                              ? ` (${formateComplexDate(student.birthDate)})`
+                              : ""}
                           </p>
                           <p>{student.email}</p>
                         </SelectItem>

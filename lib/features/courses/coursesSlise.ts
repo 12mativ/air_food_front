@@ -36,6 +36,10 @@ const sortEventsByStartDate = (events: IEvent[]) => {
   return events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 };
 
+function findStudentById(students: IStudent[], id: string) {
+  return students.find((student) => student.id === id);
+}
+
 export const coursesSlice = createSlice({
   name: "courses",
   initialState: initialState,
@@ -91,15 +95,16 @@ export const coursesSlice = createSlice({
     },
     addStudentToCourseRedux: (
       state,
-      action: PayloadAction<IStudent & { courseId: string }>
+      action: PayloadAction<{ student: IStudent; courseId: string }>
     ) => {
-      state.courses.forEach((course) => {
-        if (course.id === action.payload.courseId) {
-          if (!findEqualItemsById(course.students, action.payload.id)) {
-            course.students.push(action.payload);
-          }
+      const { student, courseId } = action.payload;
+      const courseIndex = state.courses.findIndex((course) => course.id === courseId);
+      if (courseIndex !== -1) {
+        const course = state.courses[courseIndex];
+        if (!findStudentById(course.students, student.id)) {
+          course.students.push(student);
         }
-      });
+      }
     },
     removeStudentFromCourseRedux: (state, action) => {
       const { studentId, courseId } = action.payload;

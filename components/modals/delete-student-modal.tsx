@@ -24,8 +24,8 @@ export const DeleteStudentFromCourseModal = () => {
   const handleDelete = async () => {
     if (data.studentId && data.courseId) {
       try {
-        dispatch(removeStudentFromCourseRedux({ studentId: data.studentId, courseId: data.courseId }));
         await deleteStudentFromCourse({ studentId: data.studentId, courseId: data.courseId });
+        dispatch(removeStudentFromCourseRedux({ studentId: data.studentId, courseId: data.courseId }));
         onClose();
       } catch (error) {
         setError("Произошла ошибка при удалении студента с курса.");
