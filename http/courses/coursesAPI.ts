@@ -42,9 +42,7 @@ export const deleteStudentFromCourse = async ({
   studentId: string;
 }): Promise<AxiosResponse<ICourse>> => {
   const response = await $authHost.patch(`/course/delete-student/${courseId}`, {
-    data: {
-      idStudent: studentId,
-    },
+    studentId: studentId,
   });
   return response;
 };
@@ -66,7 +64,7 @@ export const addStudentToCourse = async ({
   studentId: string;
 }): Promise<AxiosResponse<ICourse>> => {
   const response = await $authHost.patch(`/course/${courseId}`, {
-    idStudent: studentId,
+    studentId: studentId,
   });
   return response;
 };
