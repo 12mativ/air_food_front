@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IEvent } from '../courses/coursesSlise';
+import { findEqualItemsById } from "../../store";
 
 export interface ICoach {
   id: string;
@@ -7,9 +7,7 @@ export interface ICoach {
   firstName: string;
   middleName: string;
   lastName: string;
-  birthDate: string;
   userId: string;
-  events: IEvent[]
 }
 
 interface ICoachesState {
@@ -27,14 +25,18 @@ export const coachesSlice = createSlice({
     addCoaches: (state, action: PayloadAction<ICoach[]>) => {
       state.coaches = action.payload;
     },
+    addCoach: (state, action: PayloadAction<ICoach>) => {
+      if (!findEqualItemsById(state.coaches, action.payload.id)) {
+        state.coaches.push(action.payload);
+      }
+    },
     updateCoach: (state, action: PayloadAction<ICoach>) => {
       state.coaches.forEach((coach) => {
         if (coach.id === action.payload.id) {
-          const { firstName, lastName, middleName, birthDate } = action.payload;
+          const { firstName, lastName, middleName } = action.payload;
           coach.firstName = firstName;
           coach.lastName = lastName;
           coach.middleName = middleName;
-          coach.birthDate = birthDate;
         }
       });
     },
@@ -43,4 +45,4 @@ export const coachesSlice = createSlice({
 
 export default coachesSlice.reducer;
 
-export const { addCoaches, updateCoach } = coachesSlice.actions;
+export const { addCoaches, addCoach, updateCoach } = coachesSlice.actions;

@@ -1,6 +1,13 @@
-import { ICourse, IEvent } from "@/lib/features/courses/coursesSlise";
 import { $authHost } from "..";
 import { AxiosResponse } from "axios";
+import { IEvent } from "../../lib/features/events/eventsSlice";
+
+export const getEvents = async ({courseId}: {courseId: string}) => {
+  const response = await $authHost.get(`/event/${courseId}`);
+
+  return response;
+}
+
 
 export const createEvent = async ({
   name,

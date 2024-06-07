@@ -42,23 +42,20 @@ import { updateStudent } from "@/lib/features/students/studentsSlice";
 
 const formSchema = z.object({
   firstName: z
-    .string({ required_error: "Обязательно для заполнения." })
+    .string()
     .max(50, {
       message: "Имя не должно превышать 50 символов.",
-    })
-    .optional(),
+    }),
   lastName: z
     .string()
     .max(50, {
       message: "Фамилия не должна превышать 50 символов.",
-    })
-    .optional(),
+    }),
   middleName: z
     .string()
     .max(50, {
       message: "Отчество не должно превышать 50 символов.",
-    })
-    .optional(),
+    }),
   birthDate: z.date().optional(),
 });
 
@@ -76,9 +73,9 @@ export const EditStudentModal = () => {
   useEffect(() => {
     const student = data.student;
     if (student) {
-      form.setValue("firstName", student.firstName);
-      form.setValue("lastName", student.lastName);
-      form.setValue("middleName", student.middleName);
+      form.setValue("firstName", student.firstName || "");
+      form.setValue("lastName", student.lastName || "");
+      form.setValue("middleName", student.middleName || "");
       if (student.birthDate) {
         const birthDate = new Date(student.birthDate);
         form.setValue("birthDate", birthDate);
@@ -95,7 +92,7 @@ export const EditStudentModal = () => {
         firstName: values.firstName!,
         lastName: values.lastName!,
         middleName: values.middleName!,
-        birthDate: format(values.birthDate!, "yyyy-MM-dd")
+        birthDate: values.birthDate ? format(values.birthDate, "yyyy-MM-dd") : undefined
       });
       
       dispatch(updateStudent(response.data));
@@ -107,6 +104,7 @@ export const EditStudentModal = () => {
   };
 
   const handleClose = () => {
+    setError("")
     form.reset();
     onClose();
   };
@@ -150,6 +148,7 @@ export const EditStudentModal = () => {
                   <FormControl>
                     <Input
                       className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                      type="text"
                       placeholder="Имя..."
                       disabled={isLoading}
                       {...field}

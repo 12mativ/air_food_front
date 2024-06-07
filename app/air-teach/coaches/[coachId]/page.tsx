@@ -1,12 +1,10 @@
 "use client";
 
-import React from "react";
-import { IoPersonSharp } from "react-icons/io5";
 import { useAppSelector } from "@/hooks/redux-hooks";
-import { useParams } from "next/navigation";
-import { Pencil } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
-import { formateComplexDate } from "@/utils/formateComplexDate";
+import { Pencil } from "lucide-react";
+import { useParams } from "next/navigation";
+import { IoPersonSharp } from "react-icons/io5";
 
 const Page = () => {
   const { onOpen } = useModal();

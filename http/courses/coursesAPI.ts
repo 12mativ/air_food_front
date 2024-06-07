@@ -1,6 +1,6 @@
-import { ICourse } from "@/lib/features/courses/coursesSlise";
 import { $authHost } from "..";
 import { AxiosResponse } from "axios";
+import { ICourse } from "../../lib/features/courses/coursesSlice";
 
 export const getCourses = async (): Promise<AxiosResponse<ICourse[]>> => {
     const response = await $authHost.get(

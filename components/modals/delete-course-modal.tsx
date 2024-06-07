@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeCourseRedux } from '@/lib/features/courses/coursesSlise';
 import { useModal } from "@/hooks/use-modal-store";
 import {
   Dialog,
@@ -13,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ErrorAlert } from "../ErrorAlert";
 import { deleteCourse } from '@/http/courses/coursesAPI'; // Предполагается, что у вас есть API для удаления курса
+import { removeCourseRedux } from '../../lib/features/courses/coursesSlice';
 
 export const DeleteCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();

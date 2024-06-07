@@ -178,7 +178,7 @@ const Page = () => {
             />
             <Button
               disabled={isSubmitting}
-              className=" text-gray-600 font-bold rounded-xl shadow-lg hover: bg-gray-100"
+              className=" text-gray-600 font-bold rounded-xl shadow-lg bg-gray-100 hover:bg-gray-200"
             >
               Зарегистрироваться
             </Button>

@@ -32,12 +32,12 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 
 import { editStudent } from "@/http/students/studentsAPI";
-import { addStudentToCourseRedux } from "@/lib/features/courses/coursesSlise";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { ErrorAlert } from "../ErrorAlert";
 import { addStudentToCourse } from "@/http/courses/coursesAPI";
+import { addStudent } from "../../lib/features/students/studentsSlice";
 
 const formSchema = z.object({
   studentId: z.string({ required_error: "Выберите студента для добавления." }),
@@ -45,7 +45,7 @@ const formSchema = z.object({
 
 export const AddStudentToCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-  const students = useAppSelector((state) => state.studentsReducer.students);
+  const allStudents = useAppSelector((state) => state.allStudentsReducer.allStudents);
   const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "addStudentToCourse";
@@ -59,7 +59,7 @@ export const AddStudentToCourseModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const student = students.find(
+      const student = allStudents.find(
         (student) => student.id === values.studentId
       );
 
@@ -67,14 +67,13 @@ export const AddStudentToCourseModal = () => {
         throw new Error("Студент не найден");
       }
 
-      const response = await addStudentToCourse({
+      await addStudentToCourse({
         courseId: data.courseId!,
         studentId: values.studentId,
       });
 
-      dispatch(addStudentToCourseRedux({ student, courseId: data.courseId! }));
+      dispatch(addStudent(student));
 
-      form.reset();
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при добавлении студента.");
@@ -113,7 +112,7 @@ export const AddStudentToCourseModal = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {students.map((student) => (
+                      {allStudents.map((student) => (
                         <SelectItem key={student.id} value={student.id}>
                           <p>
                             {student.lastName ? student.lastName : ""}{" "}

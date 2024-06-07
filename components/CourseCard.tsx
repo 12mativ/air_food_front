@@ -1,6 +1,5 @@
 // CourseCard.tsx
 import React from "react";
-import { ICourse } from "@/lib/features/courses/coursesSlise";
 import Link from "next/link";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import { X } from "lucide-react";
@@ -8,6 +7,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { DeleteCourseModal } from "./modals/delete-course-modal";
 import { isAdmin, isCourseOrganiser } from "@/utils/roles";
 import { useAppSelector } from "@/hooks/redux-hooks";
+import { ICourse } from "../lib/features/courses/coursesSlice";
 
 const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
   const { onOpen } = useModal();

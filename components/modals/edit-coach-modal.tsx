@@ -3,8 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,43 +21,32 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 
-import { useEffect, useState } from "react";
-import { AxiosError } from "axios";
-import { ErrorAlert } from "../ErrorAlert";
-import { CalendarIcon } from "lucide-react";
 import { editCoach } from "@/http/coaches/coachesAPI";
 import { updateCoach } from "@/lib/features/coaches/coachesSlice";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { ErrorAlert } from "../ErrorAlert";
 
 const formSchema = z.object({
   firstName: z
-    .string({ required_error: "Обязательно для заполнения." })
+    .string()
     .max(50, {
       message: "Имя не должно превышать 50 символов.",
-    })
-    .optional(),
+    }),
   lastName: z
     .string()
     .max(50, {
       message: "Фамилия не должна превышать 50 символов.",
-    })
-    .optional(),
+    }),
   middleName: z
     .string()
     .max(50, {
       message: "Отчество не должно превышать 50 символов.",
     })
-    .optional(),
-  birthDate: z.date().optional(),
 });
 
 export const EditCoachModal = () => {
@@ -76,9 +63,9 @@ export const EditCoachModal = () => {
   useEffect(() => {
     const coach = data.coach;
     if (coach) {
-      form.setValue("firstName", coach.firstName);
-      form.setValue("lastName", coach.lastName);
-      form.setValue("middleName", coach.middleName);
+      form.setValue("firstName", coach.firstName || "");
+      form.setValue("lastName", coach.lastName || "");
+      form.setValue("middleName", coach.middleName || "");
     }
   }, [form, data.coach, isOpen]);
 
@@ -103,6 +90,7 @@ export const EditCoachModal = () => {
 
   const handleClose = () => {
     form.reset();
+    setError("")
     onClose();
   };
 

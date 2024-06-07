@@ -38,7 +38,7 @@ import { AxiosError } from "axios";
 import { ErrorAlert } from "../ErrorAlert";
 import { CalendarIcon } from "lucide-react";
 import { createCourse } from "@/http/courses/coursesAPI";
-import { addCourse } from "@/lib/features/courses/coursesSlise";
+import { addCourse } from "../../lib/features/courses/coursesSlice";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
@@ -55,6 +55,9 @@ export const CreateCourseModal = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: ""
+    }
   });
 
   const isLoading = form.formState.isSubmitting;
@@ -67,7 +70,6 @@ export const CreateCourseModal = () => {
 
       dispatch(addCourse(response.data));
 
-      form.reset()
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при создании курса.");

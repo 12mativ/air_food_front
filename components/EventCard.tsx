@@ -1,7 +1,7 @@
-import { IEvent } from "@/lib/features/courses/coursesSlise";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import Link from "next/link";
 import React from "react";
+import { IEvent } from "../lib/features/events/eventsSlice";
 
 const EventCard: React.FC<{ event: IEvent }> = ({ event }) => (
   <Link

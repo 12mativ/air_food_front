@@ -1,12 +1,13 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -23,23 +24,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 
-import { useEffect, useState } from "react";
-import { AxiosError } from "axios";
-import { ErrorAlert } from "../ErrorAlert";
-import { CalendarIcon } from "lucide-react";
-import { createCourse, getCourse, getCourses } from "@/http/courses/coursesAPI";
-import { addCourse, addCourses, addEvent, updateCourse } from "@/lib/features/courses/coursesSlise";
 import { createEvent } from "@/http/events/eventsAPI";
+import { AxiosError } from "axios";
+import { CalendarIcon } from "lucide-react";
+import { useState } from "react";
+import { addEvent } from "../../lib/features/events/eventsSlice";
+import { ErrorAlert } from "../ErrorAlert";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
@@ -62,6 +61,11 @@ export const CreateEventModal = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      startDate: new Date(),
+      endDate: new Date()
+    }
   });
 
   const isLoading = form.formState.isSubmitting;
@@ -77,10 +81,6 @@ export const CreateEventModal = () => {
 
       dispatch(addEvent(response.data));
 
-      const updatedCourse = await getCourse({courseId: data.courseId!});
-      dispatch(updateCourse(updatedCourse.data));
-
-      form.reset()
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при создании мероприятия.");

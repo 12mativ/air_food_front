@@ -20,8 +20,8 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
   const isCoursesPage = courseIdString !== undefined;
 
   const handleDelete = (e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) => {
-    e.preventDefault(); // Предотвращаем стандартное поведение ссылки
-    e.stopPropagation(); // Предотвращаем всплытие события
+    e.preventDefault();
+    e.stopPropagation();
     if (courseIdString) {
       onOpen("removeStudentFromCourse", { studentId: student.id, courseId: courseIdString, studentEmail: student.email});
     }

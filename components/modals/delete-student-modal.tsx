@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeStudentFromCourseRedux } from '@/lib/features/courses/coursesSlise';
 import { useModal } from "@/hooks/use-modal-store";
 import {
   Dialog,
@@ -13,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ErrorAlert } from "../ErrorAlert";
 import { deleteStudentFromCourse } from '@/http/courses/coursesAPI';
+import { removeStudent } from '../../lib/features/students/studentsSlice';
 
 export const DeleteStudentFromCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -25,7 +25,7 @@ export const DeleteStudentFromCourseModal = () => {
     if (data.studentId && data.courseId) {
       try {
         await deleteStudentFromCourse({ studentId: data.studentId, courseId: data.courseId });
-        dispatch(removeStudentFromCourseRedux({ studentId: data.studentId, courseId: data.courseId }));
+        dispatch(removeStudent({ studentId: data.studentId }));
         onClose();
       } catch (error) {
         setError("Произошла ошибка при удалении студента с курса.");

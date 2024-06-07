@@ -1,5 +1,13 @@
-import { findEqualItemsById } from "./../../store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { findEqualItemsById } from "../../store";
+
+export interface ICourseForStudent {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  creatorId: string;
+}
 
 export interface IStudent {
   id: string;
@@ -9,6 +17,7 @@ export interface IStudent {
   lastName: string;
   birthDate: string;
   userId: string;
+  courses: ICourseForStudent[]
 }
 
 interface IStudentsState {
@@ -26,6 +35,11 @@ export const studentsSlice = createSlice({
     addStudents: (state, action: PayloadAction<IStudent[]>) => {
       state.students = action.payload;
     },
+    addStudent: (state, action: PayloadAction<IStudent>) => {
+      if (!findEqualItemsById(state.students, action.payload.id)) {
+        state.students.push(action.payload);
+      }
+    },
     updateStudent: (state, action: PayloadAction<IStudent>) => {
       state.students.forEach((student) => {
         if (student.id === action.payload.id) {
@@ -37,17 +51,18 @@ export const studentsSlice = createSlice({
         }
       });
     },
-    deleteStudent: (state, action: PayloadAction<string>) => {
-      const index = state.students.findIndex(
-        (student) => student.id === action.payload
-      );
-      if (index !== -1) {
-        state.students.splice(index, 1);
-      }
+    removeStudent: (state, action: PayloadAction<{studentId: string}>) => {
+      state.students = state.students.filter(s => s.id !== action.payload.studentId)
+      // const index = state.students.findIndex(
+      //   (student) => student.id === action.payload
+      // );
+      // if (index !== -1) {
+      //   state.students.splice(index, 1);
+      // }
     },
   },
 });
 
 export default studentsSlice.reducer;
 
-export const { addStudents, updateStudent, deleteStudent } = studentsSlice.actions;
+export const { addStudents, addStudent, updateStudent, removeStudent } = studentsSlice.actions;

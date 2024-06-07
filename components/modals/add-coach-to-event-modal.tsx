@@ -32,7 +32,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 
 import { editStudent, getStudents } from "@/http/students/studentsAPI";
-import { addStudentToCourseRedux, updateEvent } from "@/lib/features/courses/coursesSlise";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { ErrorAlert } from "../ErrorAlert";
@@ -40,7 +39,8 @@ import { addStudents } from "@/lib/features/students/studentsSlice";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import { editEvent } from "@/http/events/eventsAPI";
 import { getCoaches } from "@/http/coaches/coachesAPI";
-import { addCoaches } from "@/lib/features/coaches/coachesSlice";
+import { addCoach, addCoaches } from "@/lib/features/coaches/coachesSlice";
+import { updateEvent } from "../../lib/features/events/eventsSlice";
 
 const formSchema = z.object({
   coachId: z.string({ required_error: "Выберите тренера для добавления." }),
@@ -48,7 +48,9 @@ const formSchema = z.object({
 
 export const AddCoachToCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-  const coaches = useAppSelector((state) => state.coachesReducer.coaches);
+
+  const allCoaches = useAppSelector(state => state.allCoachesReducer.allCoaches);
+
   const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "addCoachToCourse";
@@ -62,14 +64,21 @@ export const AddCoachToCourseModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await editEvent({
+      const coach = allCoaches.find(
+        (coach) => coach.id === values.coachId
+      );
+
+      if (!coach) {
+        throw new Error("Тренер не найден");
+      }
+      
+      await editEvent({
         id: data.eventId!,
         coachId: values.coachId,
       });
 
-      dispatch(updateEvent(response.data));
+      dispatch(addCoach(coach));
 
-      form.reset();
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при добавлении тренера.");
@@ -107,7 +116,7 @@ export const AddCoachToCourseModal = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {coaches.map((coach) => (
+                      {allCoaches?.map((coach) => (
                         <SelectItem value={coach.id}>
                           <p>
                             {coach.lastName ? coach.lastName : ""}{" "}
@@ -117,7 +126,6 @@ export const AddCoachToCourseModal = () => {
                             {coach.middleName
                               ? `${coach.middleName[0]}.`
                               : ""}
-                            {coach.birthDate ? ` (${formateComplexDate(coach.birthDate)})` : ""} 
                           </p>
                           <p>{coach.email}</p>
                         </SelectItem>

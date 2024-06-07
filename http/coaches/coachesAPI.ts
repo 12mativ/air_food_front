@@ -22,6 +22,12 @@ export const getCoaches = async ({
   return response;
 };
 
+export const getCoachesOnCourse = async ({eventId}: {eventId: string}) => {
+  const response = await $authHost.get(`/coach/${eventId}`);
+
+  return response;
+}
+
 export const editCoach = async ({
   id,
   firstName,

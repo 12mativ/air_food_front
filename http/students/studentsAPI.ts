@@ -22,6 +22,12 @@ export const getStudents = async ({
   return response;
 };
 
+export const getStudentsOnCourse = async ({courseId}: {courseId: string}) => {
+  const response = await $authHost.get(`/student/${courseId}`);
+
+  return response;
+}
+
 export const editStudent = async ({
   id,
   firstName,

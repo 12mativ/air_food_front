@@ -1,17 +1,15 @@
 "use client";
 import CourseCard from "@/components/CourseCard";
-import Header from "@/components/Header";
 import LoaderIndicator from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { getCourses, getCoursesAdmin } from "@/http/courses/coursesAPI";
-import { addCourses } from "@/lib/features/courses/coursesSlise";
-import { isAdmin, isCourseOrganiser, isCoach, isStudent } from "@/utils/roles";
+import { isAdmin, isCoach, isCourseOrganiser, isStudent } from "@/utils/roles";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
+import { addCourses } from "../../../lib/features/courses/coursesSlice";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,12 +17,7 @@ const Page = () => {
   const courses = useAppSelector((state) => state.coursesReducer.courses);
   const user = useAppSelector((state) => state.userReducer.user);
   const { onOpen } = useModal();
-  const params = useParams();
-  const student = useAppSelector((state) =>
-    state.studentsReducer.students.find(
-      (student) => student.id === params.studentId
-    )
-  );
+
   useEffect(() => {
     setIsLoading(true);
     if (isAdmin(user)) {

@@ -1,18 +1,16 @@
 "use client";
 
+import CoachCard from "@/components/CoachCard";
+import LoaderIndicator from "@/components/Loader";
+import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getCoaches } from "@/http/coaches/coachesAPI";
 import { addCoaches, ICoach } from "@/lib/features/coaches/coachesSlice";
-import { isAdmin, isStudent } from "@/utils/roles";
+import { isAdmin } from "@/utils/roles";
 import Link from "next/link";
-import { useModal } from "@/hooks/use-modal-store";
-import { redirect, useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import LoaderIndicator from "@/components/Loader";
-import CoachCard from "@/components/CoachCard";
-import Pagination from "@/components/Pagination";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,41 +26,31 @@ const Page = () => {
     setCoachForSearch(e.target.value);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getCoaches({
-        coachForSearch: coachForSearch,
-        page: currentPage,
-        limit: limit,
-      });
-      dispatch(addCoaches(response.data.coaches));
-      setTotalPages(Math.ceil(response.data.coachesTotalAmount / limit));
-    };
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
+  const fetchCoaches = async () => {
+    const response = await getCoaches({
+      coachForSearch: coachForSearch,
+      page: currentPage,
+      limit: limit,
+    });
+    dispatch(addCoaches(response.data.coaches));
+    setTotalPages(Math.ceil(response.data.coachesTotalAmount / limit));
+  };
+
+  useEffect(() => {
     const timer = setTimeout(() => {
-      fetchData();
+      fetchCoaches();
     }, 1000);
 
     return () => clearTimeout(timer);
   }, [coachForSearch]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await getCoaches({
-        coachForSearch: coachForSearch,
-        page: currentPage,
-        limit: limit,
-      });
-      dispatch(addCoaches(response.data.coaches));
-      setTotalPages(Math.ceil(response.data.coachesTotalAmount / limit));
-    };
-
-    fetchData();
+    fetchCoaches();
   }, [currentPage]);
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
 
   if (isLoading) {
     return <LoaderIndicator />;
@@ -71,25 +59,23 @@ const Page = () => {
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
       {isAdmin(user) && (
-        <Link href={"/air-teach/students"}>
-          <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500">
-            Все студенты
-          </Button>
-        </Link>
-      )}
-      {isAdmin(user) && (
-        <Link href={"/air-teach/coaches"}>
-          <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
-            Все тренеры
-          </Button>
-        </Link>
-      )}
-      {isAdmin(user) && (
-        <Link href={"/air-teach/courses"}>
-          <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
-            Все курсы
-          </Button>
-        </Link>
+        <>
+          <Link href={"/air-teach/students"}>
+            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+              Все студенты
+            </Button>
+          </Link>
+          <Link href={"/air-teach/coaches"}>
+            <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500 hover:text-white">
+              Все тренеры
+            </Button>
+          </Link>
+          <Link href={"/air-teach/courses"}>
+            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+              Все курсы
+            </Button>
+          </Link>
+        </>
       )}
       <div className="mt-4 mx-10 relative">
         <input
