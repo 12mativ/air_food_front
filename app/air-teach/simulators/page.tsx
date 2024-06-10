@@ -1,43 +1,61 @@
 "use client";
-import CourseCard from "@/components/CourseCard";
+
+import SimulatorCard from "@/components/SimulatorCard";
 import LoaderIndicator from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { getCourses, getCoursesAdmin } from "@/http/courses/coursesAPI";
+import { getSimulators } from "@/http/simulators/simulatorsAPI";
 import { isAdmin, isCoach, isCourseOrganiser, isStudent } from "@/utils/roles";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
-import { addCourses } from "../../../lib/features/courses/coursesSlice";
+import { addSimulators } from "@/lib/features/simulators/simulatorsSlice";
 
 const Page = () => {
+  const [simulatorForSearch, setSimulatorForSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const limit = 8;
   const dispatch = useAppDispatch();
-  const courses = useAppSelector((state) => state.coursesReducer.courses);
+  const simulators = useAppSelector(
+    (state) => state.simulatorsReducer.simulators
+  );
   const user = useAppSelector((state) => state.userReducer.user);
   const { onOpen } = useModal();
 
   useEffect(() => {
-    setIsLoading(true);
-    if (isAdmin(user)) {
-      getCoursesAdmin()
-        .then((res) => {
-          dispatch(addCourses(res.data));
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      getCourses()
-        .then((res) => {
-          dispatch(addCourses(res.data));
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, []);
+    const fetchData = async () => {
+      const response = await getSimulators({
+        simulatorForSearch: simulatorForSearch,
+        page: currentPage,
+        limit: limit,
+      });
+      dispatch(addSimulators(response.data.simulators));
+      setTotalPages(Math.ceil(response.data.simulatorsTotalAmount / limit));
+    };
 
-  if (isLoading) {
-    return <LoaderIndicator />;
-  }
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [simulatorForSearch]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getSimulators({
+        simulatorForSearch: simulatorForSearch,
+        page: currentPage,
+        limit: limit,
+      });
+      dispatch(addSimulators(response.data.simulators));
+      setTotalPages(Math.ceil(response.data.simulatorsTotalAmount / limit));
+    };
+
+    fetchData();
+  }, [currentPage]);
 
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
@@ -54,32 +72,32 @@ const Page = () => {
             </Button>
           </Link>
           <Link href={"/air-teach/courses"}>
-            <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
               Все курсы
             </Button>
           </Link>
           <Link href={"/air-teach/simulators"}>
-            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
               Все тренажёры
             </Button>
           </Link>
         </>
       )}
       <div className="flex flex-wrap mx-10 mt-6 pt-10">
-        {courses.length > 0
-          ? courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
+        {simulators.length > 0
+          ? (simulators.map((simulator) => (
+              <SimulatorCard key={simulator.id} simulator={simulator} />
             ))
-          : (isStudent(user) || isCoach(user)) && (
+        ) : (isStudent(user) || isCoach(user)) && (
               <div className="flex items-center justify-center h-full w-full">
                 <p className="text-center text-gray-500 text-lg">
-                  Курсы не найдены
+                  Тренажёры не найдены
                 </p>
               </div>
             )}
         {(isCourseOrganiser(user) || isAdmin(user)) && (
           <button
-            onClick={() => onOpen("createCourse")}
+            onClick={() => onOpen("createSimulator")}
             className="flex bg-white rounded-xl p-4 shadow-md m-2 h-40 w-full md:w-[47%] lg:w-[30%] xl:w-[23.5%] 2xl:w-[18.5%] justify-center items-center group"
           >
             <div className="bg-[#ebebeb] group-hover:bg-sky-500 transition-colors rounded-full ">

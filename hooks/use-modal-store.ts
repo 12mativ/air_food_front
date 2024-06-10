@@ -1,8 +1,9 @@
 import { ICoach } from "@/lib/features/coaches/coachesSlice";
+import { ISimulator } from "@/lib/features/simulators/simulatorsSlice";
 import { IStudent } from "@/lib/features/students/studentsSlice";
 import { create } from "zustand";
 
-export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach" | "removeCourse";
+export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach" | "removeCourse" | "removeSimulator" | "createSimulator";
 
 export interface ModalData {
   student?: IStudent;
@@ -12,6 +13,8 @@ export interface ModalData {
   eventId?: string;
   coach?: ICoach;
   coachId?: string;
+  simulator?: ISimulator;
+  simulatorId?: string;
 }
 
 interface ModalStore {
