@@ -42,7 +42,7 @@ import { ErrorAlert } from "../ErrorAlert";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
-    message: "Название курса не должно превышать 50 символов.",
+    message: "Название мероприятия не должно превышать 50 символов.",
   }),
   startDate: z.date({
     required_error: "Дата начала события обязательна.",

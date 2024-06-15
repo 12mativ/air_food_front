@@ -58,11 +58,6 @@ const Page = () => {
               Все курсы
             </Button>
           </Link>
-          <Link href={"/air-teach/simulators"}>
-            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
-              Все тренажёры
-            </Button>
-          </Link>
         </>
       )}
       <div className="flex flex-wrap mx-10 mt-6 pt-10">

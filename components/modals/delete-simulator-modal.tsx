@@ -28,7 +28,7 @@ export const DeleteSimulatorModal = () => {
         dispatch(removeSimulatorRedux(data.simulatorId)); // Удаление курса из Redux
         onClose();
       } catch (error) {
-        setError("Произошла ошибка при удалении курса.");
+        setError("Произошла ошибка при удалении тренажёра.");
       }
     } else {
       setError("Не указан идентификатор курса для удаления.");

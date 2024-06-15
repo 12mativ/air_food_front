@@ -15,6 +15,7 @@ import { getEvents } from "../../../../http/events/eventsAPI";
 import { addEvents } from "../../../../lib/features/events/eventsSlice";
 import LoaderIndicator from "../../../../components/Loader";
 import { addAllStudents } from "../../../../lib/features/allStudents/allStudentsSlice";
+import Link from "next/link";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,9 @@ const Page = () => {
   const course = useAppSelector((state) =>
     state.coursesReducer.courses.find((course) => course.id === params.courseId)
   );
-  const studentsOnCourse = useAppSelector((state) => state.studentsReducer.students);
+  const studentsOnCourse = useAppSelector(
+    (state) => state.studentsReducer.students
+  );
   const events = useAppSelector((state) => state.eventsReducer.events);
 
   useEffect(() => {
@@ -37,9 +40,11 @@ const Page = () => {
     }
 
     if (isAdmin(user) || isCourseOrganiser(user)) {
-      getStudentsOnCourse({ courseId: params.courseId as string }).then((res) => {
-        dispatch(addStudents(res.data.students));
-      });
+      getStudentsOnCourse({ courseId: params.courseId as string }).then(
+        (res) => {
+          dispatch(addStudents(res.data.students));
+        }
+      );
     }
 
     getEvents({ courseId: params.courseId as string })
@@ -50,7 +55,7 @@ const Page = () => {
   }, []);
 
   if (isLoading) {
-    return <LoaderIndicator />
+    return <LoaderIndicator />;
   }
 
   return (
@@ -115,6 +120,11 @@ const Page = () => {
             >
               Добавить студента на курс
             </Button>
+          )}
+          {(isAdmin(user) || isCourseOrganiser(user)) && (
+            <Link href={`/air-teach/courses/${course!.id}/simulators`}>
+              <Button className="w-full max-w-xs bg-sky-500 hover:bg-sky-400 mx-auto">Тренажёры</Button>
+            </Link>
           )}
         </div>
       </div>

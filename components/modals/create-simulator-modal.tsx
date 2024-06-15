@@ -37,15 +37,20 @@ import { AxiosError } from "axios";
 import { ErrorAlert } from "../ErrorAlert";
 import { createSimulator } from "@/http/simulators/simulatorsAPI";
 import { addSimulator } from "@/lib/features/simulators/simulatorsSlice";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
-    message: "Название курса не должно превышать 50 символов.",
+    message: "Название тренажёра не должно превышать 50 символов.",
   }),
+  courseId: z.string({ required_error: "Обязательно для заполения" }),
 });
 
 export const CreateSimulatorModal = () => {
   const { isOpen, onClose, type } = useModal();
+  const params = useParams();
+  const courseId = params?.courseId;
+  const courseIdString = Array.isArray(courseId) ? courseId[0] : courseId;
   const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createSimulator";
@@ -54,16 +59,23 @@ export const CreateSimulatorModal = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: ""
-    }
+      name: "",
+      courseId: courseIdString || "", 
+    },
   });
 
   const isLoading = form.formState.isSubmitting;
+
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await createSimulator({
         name: values.name!,
+        courseId: values.courseId!,
       });
 
       dispatch(addSimulator(response.data));
@@ -74,10 +86,17 @@ export const CreateSimulatorModal = () => {
     }
   };
 
-  const handleClose = () => {
-    form.reset();
-    onClose();
-  };
+  useEffect(() => {
+    if (courseIdString) {
+      form.setValue('courseId', courseIdString);
+    }
+  }, [courseIdString, form]);
+
+  useEffect(() => {
+    if (isModalOpen && courseIdString) {
+      form.setValue('courseId', courseIdString);
+    }
+  }, [isModalOpen, courseIdString, form]);
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
