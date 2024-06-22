@@ -68,3 +68,20 @@ export const addStudentToCourse = async ({
   });
   return response;
 };
+
+export const updateCourse = async ({
+  id,
+  name,
+  startDate,
+  endDate,
+  creatorId
+}: {
+  id: string;
+  name?: string;
+  startDate?: string;
+  endDate?: string;
+  creatorId?: string;
+}): Promise<AxiosResponse<ICourse>> => {
+  const response = await $authHost.patch(`/course/${id}`, {name, startDate, endDate, creatorId});
+  return response; 
+};

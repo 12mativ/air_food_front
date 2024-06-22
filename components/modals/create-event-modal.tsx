@@ -30,7 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 
 import { createEvent } from "@/http/events/eventsAPI";
@@ -39,6 +39,8 @@ import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { addEvent } from "../../lib/features/events/eventsSlice";
 import { ErrorAlert } from "../ErrorAlert";
+import { ICourse, updateCourse } from "../../lib/features/courses/coursesSlice";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
@@ -58,7 +60,10 @@ export const CreateEventModal = () => {
 
   const isModalOpen = isOpen && type === "createEvent";
   const dispatch = useAppDispatch();
-
+  const params = useParams();
+  const course = useAppSelector((state) =>
+    state.coursesReducer.courses.find((course) => course.id === params.courseId)
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,9 +83,32 @@ export const CreateEventModal = () => {
         endDate: format(values.endDate!, "yyyy-MM-dd"),
         courseId: data.courseId!,
       });
-
+  
       dispatch(addEvent(response.data));
-
+  
+      // Проверка и обновление дат курса
+      if (course) {
+        const updatedCourse: ICourse = {
+          ...course,
+          id: course.id!,
+          name: course.name!,
+          creatorId: course.creatorId!,
+          improvingCompetencies: course.improvingCompetencies!,
+          prerequisiteCompetencies: course.prerequisiteCompetencies!,
+          startDate: course.startDate
+            ? new Date(course.startDate) > new Date(response.data.startDate)
+              ? response.data.startDate
+              : course.startDate
+            : response.data.startDate,
+          endDate: course.endDate
+            ? new Date(course.endDate) < new Date(response.data.endDate)
+              ? response.data.endDate
+              : course.endDate
+            : response.data.endDate,
+        };
+        dispatch(updateCourse(updatedCourse));
+      }
+  
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при создании мероприятия.");

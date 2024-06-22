@@ -52,7 +52,11 @@ const Page = () => {
         dispatch(addEvents(res.data.events));
       })
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [params.courseId, user, dispatch]);
+
+  useEffect(() => {
+    // Обновление данных на странице при изменении курса
+  }, [course]);
 
   if (isLoading) {
     return <LoaderIndicator />;
@@ -65,10 +69,6 @@ const Page = () => {
           <p className="text-3xl font-bold text-sky-500">
             Курс "{course?.name}"
           </p>
-          {/* <Pencil className="text-sky-500 cursor-pointer" onClick={() => {
-            console.log('123')
-            onOpen("editStudent", {student: student})
-            }} /> */}
         </div>
         <div className="flex flex-row w-full items-center gap-x-20">
           <div className="flex flex-col gap-y-3 w-full justify-center items-center text-gray-500 font-semibold">
