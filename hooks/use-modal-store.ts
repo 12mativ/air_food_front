@@ -3,7 +3,7 @@ import { ISimulator } from "@/lib/features/simulators/simulatorsSlice";
 import { IStudent } from "@/lib/features/students/studentsSlice";
 import { create } from "zustand";
 
-export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach" | "removeCourse" | "removeSimulator" | "createSimulator";
+export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach" | "removeCourse" | "removeSimulator" | "createSimulator" | "editSimulator" |"addSimulatorToEvent";
 
 export interface ModalData {
   student?: IStudent;

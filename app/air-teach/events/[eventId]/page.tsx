@@ -7,7 +7,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { getCoaches, getCoachesOnCourse } from "@/http/coaches/coachesAPI";
 import { addCoaches } from "@/lib/features/coaches/coachesSlice";
 import { formateComplexDate } from "@/utils/formateComplexDate";
-import { isAdmin } from "@/utils/roles";
+import { isAdmin, isCourseOrganiser } from "@/utils/roles";
 import { Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,6 +15,9 @@ import { IoPersonSharp } from "react-icons/io5";
 import { IEvent } from "../../../../lib/features/events/eventsSlice";
 import { addAllCoaches } from "../../../../lib/features/allCoaches/allCoachesSlice";
 import LoaderIndicator from "../../../../components/Loader";
+import SimulatorCard from "../../../../components/SimulatorCard";
+import { ISimulator, addSimulators } from "../../../../lib/features/simulators/simulatorsSlice";
+import { getSimulatorsOnEvent, getSimulatorsOnCourse } from "@/http/simulators/simulatorsAPI";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,25 +33,45 @@ const Page = () => {
   const coachesOnCourse = useAppSelector(
     (state) => state.coachesReducer.coaches
   );
+  const simulators = useAppSelector(
+    (state) => state.simulatorsReducer.simulators
+  );
 
   useEffect(() => {
-    setIsLoading(true);
-    if (isAdmin(user)) {
-      getCoaches({ coachForSearch: "" }).then((res) => {
-        dispatch(addAllCoaches(res.data.coaches));
-      });
-    }
-
-    getCoachesOnCourse({ eventId: params.eventId as string })
-      .then((res) => {
-        dispatch(addCoaches(res.data.coaches));
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
+    const fetchData = async () => {
+      setIsLoading(true);
+  
+      try {
+        if (isAdmin(user)) {
+          const coachesResponse = await getCoaches({ coachForSearch: "" });
+          dispatch(addAllCoaches(coachesResponse.data.coaches));
+        }
+  
+        const coachesOnCourseResponse = await getCoachesOnCourse({ eventId: params.eventId as string });
+        dispatch(addCoaches(coachesOnCourseResponse.data.coaches));
+  
+        if (isAdmin(user) || isCourseOrganiser(user)) {
+          const simulatorsOnEventResponse = await getSimulatorsOnEvent({ eventId: params.eventId as string });
+          dispatch(addSimulators(simulatorsOnEventResponse.data?.simulators ?? []));
+  
+          const simulatorsOnCourseResponse = await getSimulatorsOnCourse({ courseId: params.courseId as string });
+          dispatch(addSimulators(simulatorsOnCourseResponse.data?.simulators ?? []));
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, [params.eventId, params.courseId, user, dispatch]);
 
   if (isLoading) {
-    return <LoaderIndicator />
+    return <LoaderIndicator />;
   }
+
+  const filteredSimulators = simulators?.filter(simulator => simulator.courseId === params.courseId);
 
   return (
     <div className="flex justify-center items-center w-full h-full">
@@ -57,12 +80,6 @@ const Page = () => {
           <p className="text-3xl font-bold text-sky-500">
             Мероприятие "{event?.name}"
           </p>
-          {/* <Pencil
-            className="text-sky-500 cursor-pointer"
-            onClick={() => {
-              onOpen("editStudent", { student: student });
-            }}
-          /> */}
         </div>
         <div className="flex flex-row items-center gap-x-20">
           <IoPersonSharp className="text-9xl text-gray-400" />
@@ -84,7 +101,7 @@ const Page = () => {
             <p>Тренеры:</p>
             <div className="flex flex-wrap mx-10 mt-6 pt-10">
               {coachesOnCourse?.map((coach) => (
-                <CoachCard coach={coach} />
+                <CoachCard key={coach.id} coach={coach} />
               ))}
             </div>
           </>
@@ -96,6 +113,27 @@ const Page = () => {
             className="bg-sky-500 hover:bg-sky-400"
           >
             Добавить тренера на мероприятие
+          </Button>
+        )}
+        {isAdmin(user) && (
+          <>
+            <p>Тренажёры:</p>
+            <div className="flex flex-wrap mx-10 mt-6 pt-10">
+              {filteredSimulators?.map((simulator) => (
+                <SimulatorCard key={simulator.id} simulator={simulator} />
+              ))}
+            </div>
+            <p>Debug: {filteredSimulators?.length} simulators</p>
+          </>
+        )}
+        {isAdmin(user) && (
+          <Button
+            onClick={() =>
+              onOpen("addSimulatorToEvent", { eventId: event?.id })
+            }
+            className="bg-sky-500 hover:bg-sky-400"
+          >
+            Добавить тренажер на мероприятие
           </Button>
         )}
       </div>

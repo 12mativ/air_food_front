@@ -11,6 +11,8 @@ import { EditCoachModal } from "../modals/edit-coach-modal";
 import { DeleteCourseModal } from "../modals/delete-course-modal";
 import { DeleteSimulatorModal } from "../modals/delete-simulator-modal";
 import { CreateSimulatorModal } from "../modals/create-simulator-modal";
+import { EditSimulatorModal } from "../modals/edit-simulator-modal";
+import { AddSimulatorToEventModal } from "../modals/add-simulator-to-event-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -29,12 +31,14 @@ export function ModalProvider() {
       <DeleteSimulatorModal />
       <EditCoachModal />
       <EditStudentModal />
+      <EditSimulatorModal />
       <DeleteStudentFromCourseModal />
       <CreateCourseModal />
       <CreateEventModal />
       <CreateSimulatorModal />
       <AddStudentToCourseModal />
       <AddCoachToCourseModal />
+      <AddSimulatorToEventModal/>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ISimulator {
+  eventId: string;
   courseId: string | string[];
   id: string;
   name: string;

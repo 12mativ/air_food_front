@@ -13,16 +13,24 @@ export interface ICourse {
 
 interface ICoursesState {
   courses: ICourse[];
+  selectedCourse?: ICourse;
 }
 
 const initialState: ICoursesState = {
   courses: [],
+  selectedCourse: undefined,
 };
 
 export const coursesSlice = createSlice({
   name: "courses",
   initialState: initialState,
   reducers: {
+    setCourses: (state, action: PayloadAction<ICourse[]>) => {
+      state.courses = action.payload;
+    },
+    selectCourse: (state, action: PayloadAction<ICourse>) => {
+      state.selectedCourse = action.payload;
+    },
     addCourses: (state, action: PayloadAction<ICourse[]>) => {
       state.courses = action.payload;
     },
@@ -54,5 +62,7 @@ export const {
   addCourse,
   addCourses,
   updateCourse,
-  removeCourseRedux
+  removeCourseRedux,
+  selectCourse,
+  setCourses
 } = coursesSlice.actions;

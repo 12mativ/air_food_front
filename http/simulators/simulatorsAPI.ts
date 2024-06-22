@@ -33,3 +33,25 @@ export const deleteSimulator = async ({
   const response = await $authHost.delete(`/simulator/${simulatorId}`);
   return response;
 };
+
+export const getSimulatorsOnEvent = async ({
+  eventId,
+}: {
+  eventId: string;
+}) => {
+  const response = await $authHost.get(`/simulator/${eventId}`);
+  return response.data;
+};
+
+export const editSimulator = async ({
+  id,
+  name,
+  courseId
+}: {
+  id: string;
+  name?: string;
+  courseId? : string;
+}): Promise<AxiosResponse<ISimulator>> => {
+  const response = await $authHost.patch(`/simulator/${id}`, {name, courseId});
+  return response; 
+};

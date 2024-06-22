@@ -40,7 +40,7 @@ const Page = () => {
     fetchSimulators();
   }, [dispatch, params.courseId, user]);
 
-  const filteredSimulators = simulators.filter(simulator => simulator.courseId === params.courseId);
+  const filteredSimulators = simulators?.filter(simulator => simulator.courseId === params.courseId);
 
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">

@@ -29,14 +29,29 @@ export const editEvent = async ({
   name,
   startDate,
   endDate,
-  coachId
+  coachId,
+  simulatorId,
 }: {
   id: string;
   name?: string;
   startDate?: string;
   endDate?: string;
   coachId?: string;
+  simulatorId? : string;
 }): Promise<AxiosResponse<IEvent>> => {
-  const response = await $authHost.patch(`/event/${id}`, {name, startDate, endDate, coachId});
+  const response = await $authHost.patch(`/event/${id}`, {name, startDate, endDate, coachId, simulatorId});
+  return response;
+};
+
+export const addSimulatorToEvent = async ({
+  eventId,
+  simulatorId,
+}: {
+  eventId: string;
+  simulatorId: string;
+}): Promise<AxiosResponse<IEvent>> => {
+  const response = await $authHost.patch(`/event/${eventId}`, {
+    simulatorId: simulatorId,
+  });
   return response;
 };
