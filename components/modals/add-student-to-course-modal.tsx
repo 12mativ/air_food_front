@@ -31,13 +31,13 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 
-import { editStudent } from "@/http/students/studentsAPI";
+import { addStudentToCourse } from "@/http/courses/coursesAPI";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ErrorAlert } from "../ErrorAlert";
-import { addStudentToCourse } from "@/http/courses/coursesAPI";
-import { addStudent } from "../../lib/features/students/studentsSlice";
+import { IStudent, addStudent } from "../../lib/features/students/studentsSlice";
+import { getStudentsOnCourse } from "@/http/students/studentsAPI";
 
 const formSchema = z.object({
   studentId: z.string({ required_error: "Выберите студента для добавления." }),
@@ -47,6 +47,7 @@ export const AddStudentToCourseModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const allStudents = useAppSelector((state) => state.allStudentsReducer.allStudents);
   const [error, setError] = useState("");
+  const [studentsOnCourse, setStudentsOnCourse] = useState<IStudent[]>([]);
 
   const isModalOpen = isOpen && type === "addStudentToCourse";
   const dispatch = useAppDispatch();
@@ -56,6 +57,23 @@ export const AddStudentToCourseModal = () => {
   });
 
   const isLoading = form.formState.isSubmitting;
+
+  useEffect(() => {
+    const fetchStudentsOnCourse = async () => {
+      try {
+        const response = await getStudentsOnCourse({ courseId: data.courseId! });
+        setStudentsOnCourse(response.data.students);
+      } catch (error) {
+        setError("Произошла ошибка при получении списка студентов на курсе.");
+      }
+    };
+  
+    if (isModalOpen && data.courseId) {
+      fetchStudentsOnCourse();
+    } else if (isModalOpen && !data.courseId) {
+      setError("Course ID is undefined");
+    }
+  }, [isModalOpen, data.courseId]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -86,12 +104,16 @@ export const AddStudentToCourseModal = () => {
     onClose();
   };
 
+  const studentsNotOnCourse = allStudents.filter(
+    (student) => !studentsOnCourse.some((s) => s.id === student.id)
+  );
+
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Добавить студента на курс</DialogTitle>
-          <DialogDescription>Ввыберите студента из списка</DialogDescription>
+          <DialogDescription>Выберите студента из списка</DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
@@ -112,7 +134,7 @@ export const AddStudentToCourseModal = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {allStudents.map((student) => (
+                      {studentsNotOnCourse.map((student) => (
                         <SelectItem key={student.id} value={student.id}>
                           <p>
                             {student.lastName ? student.lastName : ""}{" "}
