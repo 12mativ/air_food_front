@@ -9,12 +9,14 @@ import { getStudents, getStudentsOnCourse } from "@/http/students/studentsAPI";
 import { addStudents } from "@/lib/features/students/studentsSlice";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import { isAdmin, isCourseOrganiser } from "@/utils/roles";
+import { Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getEvents } from "../../../../http/events/eventsAPI";
-import { addEvents } from "../../../../lib/features/events/eventsSlice";
+import { MdSchool } from "react-icons/md";
 import LoaderIndicator from "../../../../components/Loader";
+import { getEvents } from "../../../../http/events/eventsAPI";
 import { addAllStudents } from "../../../../lib/features/allStudents/allStudentsSlice";
+import { addEvents } from "../../../../lib/features/events/eventsSlice";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -60,25 +62,32 @@ const Page = () => {
           <p className="text-3xl font-bold text-sky-500">
             Курс "{course?.name}"
           </p>
-          {/* <Pencil className="text-sky-500 cursor-pointer" onClick={() => {
-            console.log('123')
-            onOpen("editStudent", {student: student})
-            }} /> */}
+          <Pencil
+            className="text-sky-500 cursor-pointer"
+            onClick={() => {
+              onOpen("editCourse", { course: course });
+            }}
+          />
         </div>
         <div className="flex flex-row w-full items-center gap-x-20">
           <div className="flex flex-col gap-y-3 w-full justify-center items-center text-gray-500 font-semibold">
-            <p>
-              Дата начала:{" "}
-              {course?.startDate
-                ? formateComplexDate(course.startDate)
-                : "Не задано"}
-            </p>
-            <p>
-              Дата завершения:{" "}
-              {course?.endDate
-                ? formateComplexDate(course.endDate)
-                : "Не задано"}
-            </p>
+            <div className="flex flex-row items-center gap-x-20">
+              <MdSchool className="text-9xl text-gray-400" />
+              <div className="flex flex-col gap-y-3">
+                <p>
+                  Дата начала:{" "}
+                  {course?.startDate
+                    ? formateComplexDate(course.startDate)
+                    : "Не задано"}
+                </p>
+                <p>
+                  Дата завершения:{" "}
+                  {course?.endDate
+                    ? formateComplexDate(course.endDate)
+                    : "Не задано"}
+                </p>
+              </div>
+            </div>
             <p>Мероприятия:</p>
             <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
               {events?.map((event) => (

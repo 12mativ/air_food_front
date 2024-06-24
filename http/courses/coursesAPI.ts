@@ -1,12 +1,12 @@
-import { $authHost } from "..";
 import { AxiosResponse } from "axios";
+import { $authHost } from "..";
 import { ICourse } from "../../lib/features/courses/coursesSlice";
 
 export const getCourses = async (): Promise<AxiosResponse<ICourse[]>> => {
-    const response = await $authHost.get(
-      `/course`
-    );
-    return response;
+  const response = await $authHost.get(
+    `/course`
+  );
+  return response;
 };
 
 export const getCoursesAdmin = async (): Promise<AxiosResponse<ICourse[]>> => {
@@ -16,7 +16,7 @@ export const getCoursesAdmin = async (): Promise<AxiosResponse<ICourse[]>> => {
   return response;
 };
 
-export const getCourse = async ({courseId}: {courseId: string}): Promise<AxiosResponse<ICourse>> => {
+export const getCourse = async ({ courseId }: { courseId: string }): Promise<AxiosResponse<ICourse>> => {
   const response = await $authHost.get(
     `/course/${courseId}`
   );
@@ -31,6 +31,22 @@ export const createCourse = async ({
   const response = await $authHost.post(`/course`, {
     name
   });
+  return response;
+};
+export const editCourse = async ({
+  id,
+  name,
+  startDate,
+  endDate,
+  creatorId
+}: {
+  id: string;
+  name?: string;
+  startDate?: string;
+  endDate?: string;
+  creatorId?: string;
+}): Promise<AxiosResponse<ICourse>> => {
+  const response = await $authHost.patch(`/course/${id}`, { name, startDate, endDate, creatorId });
   return response;
 };
 

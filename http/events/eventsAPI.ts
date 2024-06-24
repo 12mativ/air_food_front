@@ -1,8 +1,8 @@
-import { $authHost } from "..";
 import { AxiosResponse } from "axios";
+import { $authHost } from "..";
 import { IEvent } from "../../lib/features/events/eventsSlice";
 
-export const getEvents = async ({courseId}: {courseId: string}) => {
+export const getEvents = async ({ courseId }: { courseId: string }) => {
   const response = await $authHost.get(`/event/${courseId}`);
 
   return response;
@@ -20,7 +20,7 @@ export const createEvent = async ({
   endDate: string;
   courseId: string;
 }): Promise<AxiosResponse<IEvent>> => {
-  const response = await $authHost.post(`/event`, {name, startDate, endDate, courseId});
+  const response = await $authHost.post(`/event`, { name, startDate, endDate, courseId });
   return response;
 };
 
@@ -37,6 +37,15 @@ export const editEvent = async ({
   endDate?: string;
   coachId?: string;
 }): Promise<AxiosResponse<IEvent>> => {
-  const response = await $authHost.patch(`/event/${id}`, {name, startDate, endDate, coachId});
+  const response = await $authHost.patch(`/event/${id}`, { name, startDate, endDate, coachId });
+  return response;
+};
+
+export const deleteEvent = async ({
+  eventId,
+}: {
+  eventId: string;
+}): Promise<AxiosResponse<IEvent>> => {
+  const response = await $authHost.delete(`/event/${eventId}`);
   return response;
 };
