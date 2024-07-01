@@ -17,10 +17,6 @@ const initialState: IEventsState = {
   events: [],
 };
 
-export const sortEventsByStartDate = (events: IEvent[]) => {
-  return events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-};
-
 export const eventsSlice = createSlice({
   name: "events",
   initialState: initialState,

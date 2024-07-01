@@ -64,6 +64,8 @@ const Page = () => {
     return <LoaderIndicator />;
   }
 
+  const sortedEvents = events.slice().sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="flex flex-col w-full justify-center items-center gap-y-11">
@@ -99,7 +101,7 @@ const Page = () => {
             </div>
             <p>Мероприятия:</p>
             <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
-              {events?.map((event) => (
+              {sortedEvents?.map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
             </div>
