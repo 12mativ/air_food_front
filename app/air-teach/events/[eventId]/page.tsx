@@ -11,13 +11,13 @@ import { isAdmin, isCourseOrganiser } from "@/utils/roles";
 import { Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IoPersonSharp } from "react-icons/io5";
-import { IEvent } from "../../../../lib/features/events/eventsSlice";
-import { addAllCoaches } from "../../../../lib/features/allCoaches/allCoachesSlice";
+import { MdSchool } from "react-icons/md";
 import LoaderIndicator from "../../../../components/Loader";
+import { addAllCoaches } from "../../../../lib/features/allCoaches/allCoachesSlice";
 import SimulatorCard from "../../../../components/SimulatorCard";
-import { ISimulator, addSimulators } from "../../../../lib/features/simulators/simulatorsSlice";
+import { addSimulators } from "../../../../lib/features/simulators/simulatorsSlice";
 import { getSimulatorsOnEvent, getSimulatorsOnCourse } from "@/http/simulators/simulatorsAPI";
+
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -80,9 +80,15 @@ const Page = () => {
           <p className="text-3xl font-bold text-sky-500">
             Мероприятие "{event?.name}"
           </p>
+          <Pencil
+            className="text-sky-500 cursor-pointer"
+            onClick={() => {
+              onOpen("editEvent", { event: event });
+            }}
+          />
         </div>
         <div className="flex flex-row items-center gap-x-20">
-          <IoPersonSharp className="text-9xl text-gray-400" />
+          <MdSchool className="text-9xl text-gray-400" />
           <div className="flex flex-col gap-y-3 text-gray-500 font-semibold">
             <p>
               Начало мероприятия:{" "}

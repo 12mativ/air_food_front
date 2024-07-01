@@ -1,13 +1,13 @@
 // CourseCard.tsx
-import React from "react";
-import Link from "next/link";
-import { formateComplexDate } from "@/utils/formateComplexDate";
-import { X } from "lucide-react";
-import { useModal } from "@/hooks/use-modal-store";
-import { DeleteCourseModal } from "./modals/delete-course-modal";
-import { isAdmin, isCourseOrganiser } from "@/utils/roles";
 import { useAppSelector } from "@/hooks/redux-hooks";
+import { useModal } from "@/hooks/use-modal-store";
+import { formateComplexDate } from "@/utils/formateComplexDate";
+import { isAdmin, isCourseOrganiser } from "@/utils/roles";
+import { X } from "lucide-react";
+import Link from "next/link";
+import React from "react";
 import { ICourse } from "../lib/features/courses/coursesSlice";
+import { DeleteCourseModal } from "./modals/delete-course-modal";
 
 const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
   const { onOpen } = useModal();
@@ -16,7 +16,7 @@ const CourseCard: React.FC<{ course: ICourse }> = ({ course }) => {
   const handleDelete = (e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    onOpen("removeCourse", { courseId: course.id });
+    onOpen("removeCourse", { courseId: course.id, courseName: course.name });
   };
 
   return (

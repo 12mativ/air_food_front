@@ -18,8 +18,7 @@ const Page = () => {
       <div className="flex flex-col items-center gap-y-11">
         <div className="flex items-center gap-x-3">
           <p className="text-3xl font-bold text-sky-500">Общая информация</p>
-          <Pencil
-            className="text-sky-500 cursor-pointer"
+          <Pencil className="text-sky-500 cursor-pointer"
             onClick={() => {
               onOpen("editCoach", { coach: coach });
             }}
