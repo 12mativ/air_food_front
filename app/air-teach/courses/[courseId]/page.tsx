@@ -102,7 +102,7 @@ const Page = () => {
             <p>Мероприятия:</p>
             <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
               {sortedEvents?.map((event) => (
-                <EventCard key={event.id} event={event} />
+                course && <EventCard key={event.id} event={event} course={course} />
               ))}
             </div>
             {isAdmin(user) && (

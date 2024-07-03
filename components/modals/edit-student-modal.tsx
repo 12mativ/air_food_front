@@ -43,19 +43,15 @@ import { updateStudent } from "@/lib/features/students/studentsSlice";
 const formSchema = z.object({
   firstName: z
     .string()
-    .max(50, {
-      message: "Имя не должно превышать 50 символов.",
-    }),
+    .min(1, { message: "Имя должно содержать минимум 1 символ" })
+    .max(50, { message: "Имя не должно превышать 50 символов."}),
   lastName: z
     .string()
-    .max(50, {
-      message: "Фамилия не должна превышать 50 символов.",
-    }),
+    .min(1, { message: "Фамилия должна содержать минимум 1 символ" })
+    .max(50, { message: "Фамилия не должна превышать 50 символов."}),
   middleName: z
     .string()
-    .max(50, {
-      message: "Отчество не должно превышать 50 символов.",
-    }),
+    .max(50, { message: "Отчество не должно превышать 50 символов."}),
   birthDate: z.date().optional(),
 });
 

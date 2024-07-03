@@ -40,9 +40,9 @@ import { addSimulator } from "@/lib/features/simulators/simulatorsSlice";
 import { useParams } from "next/navigation";
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
-    message: "Название тренажёра не должно превышать 50 символов.",
-  }),
+  name: z.string({ required_error: "Обязательно для заполнения." })
+  .min(1, { message: "Название тренажёра должно содержать минимум 1 символ"})
+  .max(50, { message: "Название тренажёра не должно превышать 50 символов.",}),
   courseId: z.string({ required_error: "Обязательно для заполения" }),
 });
 

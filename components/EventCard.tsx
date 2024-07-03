@@ -7,9 +7,14 @@ import Link from "next/link";
 import React from "react";
 import { IEvent } from "../lib/features/events/eventsSlice";
 import { DeleteEventModal } from "./modals/delete-event-modal";
+import { ICourse } from "../lib/features/courses/coursesSlice";
 
+interface EventCardProps {
+  event: IEvent;
+  course: ICourse;
+}
 
-const EventCard: React.FC<{ event: IEvent }> = ({ event }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, course }) => {
   const { onOpen } = useModal();
   const user = useAppSelector((state) => state.userReducer.user);
 
@@ -21,7 +26,7 @@ const EventCard: React.FC<{ event: IEvent }> = ({ event }) => {
   return (
     <>
       <Link
-        href={`/air-teach/events/${event.id}`}
+         href={`/air-teach/courses/${course.id}/events/${event.id}`}
         className="hover:scale-[1.01] relative transition bg-white rounded-xl p-4 shadow-md m-2 h-40 w-full md:w-[47%] lg:w-[30%] xl:w-[23.5%] 2xl:w-[18.5%]"
       >
         {(isCourseOrganiser(user) || isAdmin(user)) && (

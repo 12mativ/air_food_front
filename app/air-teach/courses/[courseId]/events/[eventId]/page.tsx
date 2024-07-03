@@ -12,10 +12,10 @@ import { Pencil } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdSchool } from "react-icons/md";
-import LoaderIndicator from "../../../../components/Loader";
-import { addAllCoaches } from "../../../../lib/features/allCoaches/allCoachesSlice";
-import SimulatorCard from "../../../../components/SimulatorCard";
-import { addSimulators } from "../../../../lib/features/simulators/simulatorsSlice";
+import LoaderIndicator from "../../../../../../components/Loader";
+import { addAllCoaches } from "../../../../../../lib/features/allCoaches/allCoachesSlice";
+import SimulatorCard from "../../../../../../components/SimulatorCard";
+import { addSimulators } from "../../../../../../lib/features/simulators/simulatorsSlice";
 import { getSimulatorsOnEvent, getSimulatorsOnCourse } from "@/http/simulators/simulatorsAPI";
 
 
@@ -129,7 +129,6 @@ const Page = () => {
                 <SimulatorCard key={simulator.id} simulator={simulator} />
               ))}
             </div>
-            <p>Debug: {filteredSimulators?.length} simulators</p>
           </>
         )}
         {isAdmin(user) && (

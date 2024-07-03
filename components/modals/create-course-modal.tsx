@@ -41,9 +41,9 @@ import { createCourse } from "@/http/courses/coursesAPI";
 import { addCourse } from "../../lib/features/courses/coursesSlice";
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
-    message: "Название курса не должно превышать 50 символов.",
-  }),
+  name: z.string({ required_error: "Обязательно для заполнения." })
+  .min(1, { message: "Название курса должно содержать минимум 1 символ"})
+  .max(50, { message: "Название курса не должно превышать 50 символов.",}),
 });
 
 export const CreateCourseModal = () => {

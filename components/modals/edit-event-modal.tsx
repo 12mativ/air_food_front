@@ -43,9 +43,8 @@ import { ErrorAlert } from "../ErrorAlert";
 const formSchema = z.object({
     eventName: z
         .string()
-        .max(50, {
-            message: "Название мероприятия не должно превышать 50 символов.",
-        }),
+        .min(1, { message: "Название мероприятия должно содержать минимум 1 символ"})
+        .max(50, { message: "Название мероприятия не должно превышать 50 символов.",}),
     eventStartDate: z.date().optional(),
     eventEndDate: z.date().optional(),
 });

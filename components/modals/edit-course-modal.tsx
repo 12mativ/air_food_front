@@ -34,9 +34,8 @@ import { ErrorAlert } from "../ErrorAlert";
 const formSchema = z.object({
   courseName: z
     .string()
-    .max(50, {
-      message: "Название курса не должно превышать 50 символов.",
-    }),
+    .min(1, { message: "Название курса должно содержать минимум 1 символ" })
+    .max(50, { message: "Название курса не должно превышать 50 символов.",}),
 });
 
 export const EditCourseModal = () => {
@@ -47,7 +46,7 @@ export const EditCourseModal = () => {
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
   });
 
   useEffect(() => {
@@ -75,7 +74,7 @@ export const EditCourseModal = () => {
   };
 
   const handleClose = () => {
-    setError("")
+    setError("");
     form.reset();
     onClose();
   };
@@ -85,9 +84,7 @@ export const EditCourseModal = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Редактрирование курса</DialogTitle>
-          <DialogDescription>
-            Введите данные курса.
-          </DialogDescription>
+          <DialogDescription>Введите данные курса.</DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>

@@ -43,9 +43,9 @@ import { ICourse, updateCourse } from "../../lib/features/courses/coursesSlice";
 import { useParams } from "next/navigation";
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Обязательно для заполнения." }).max(50, {
-    message: "Название мероприятия не должно превышать 50 символов.",
-  }),
+  name: z.string({ required_error: "Обязательно для заполнения." })
+  .min(1, { message: "Название мероприятия должно содержать минимум 1 символ"})
+  .max(50, {message: "Название мероприятия не должно превышать 50 символов.",}),
   startDate: z.date({
     required_error: "Дата начала события обязательна.",
   }),

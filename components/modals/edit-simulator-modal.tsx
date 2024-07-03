@@ -35,9 +35,8 @@ import { updateSimulator } from "../../lib/features/simulators/simulatorsSlice";
 const formSchema = z.object({
   name: z
     .string()
-    .max(50, {
-      message: "Название тренажёра не должно превышать 50 символов.",
-    }),
+    .min(1, { message: "Название тренажёра должно содержать минимум 1 символ"})
+    .max(50, { message: "Название тренажёра не должно превышать 50 символов."}),
 });
 
 export const EditSimulatorModal = () => {
