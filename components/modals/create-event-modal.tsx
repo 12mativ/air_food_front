@@ -41,11 +41,17 @@ import { addEvent } from "../../lib/features/events/eventsSlice";
 import { ErrorAlert } from "../ErrorAlert";
 import { ICourse, updateCourse } from "../../lib/features/courses/coursesSlice";
 import { useParams } from "next/navigation";
+import { getCourse } from "../../http/courses/coursesAPI";
 
 const formSchema = z.object({
-  name: z.string({ required_error: "Обязательно для заполнения." })
-  .min(1, { message: "Название мероприятия должно содержать минимум 1 символ"})
-  .max(50, {message: "Название мероприятия не должно превышать 50 символов.",}),
+  name: z
+    .string({ required_error: "Обязательно для заполнения." })
+    .min(1, {
+      message: "Название мероприятия должно содержать минимум 1 символ",
+    })
+    .max(50, {
+      message: "Название мероприятия не должно превышать 50 символов.",
+    }),
   startDate: z.date({
     required_error: "Дата начала события обязательна.",
   }),
@@ -69,13 +75,18 @@ export const CreateEventModal = () => {
     defaultValues: {
       name: "",
       startDate: new Date(),
-      endDate: new Date()
-    }
+      endDate: new Date(),
+    },
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!data.courseId) {
+      setError("Не указан идентификатор курса для удаления.");
+      return;
+    }
+
     try {
       const response = await createEvent({
         name: values.name!,
@@ -83,32 +94,11 @@ export const CreateEventModal = () => {
         endDate: format(values.endDate!, "yyyy-MM-dd"),
         courseId: data.courseId!,
       });
-  
+
       dispatch(addEvent(response.data));
-  
-      // Проверка и обновление дат курса
-      if (course) {
-        const updatedCourse: ICourse = {
-          ...course,
-          id: course.id!,
-          name: course.name!,
-          creatorId: course.creatorId!,
-          improvingCompetencies: course.improvingCompetencies!,
-          prerequisiteCompetencies: course.prerequisiteCompetencies!,
-          startDate: course.startDate
-            ? new Date(course.startDate) > new Date(response.data.startDate)
-              ? response.data.startDate
-              : course.startDate
-            : response.data.startDate,
-          endDate: course.endDate
-            ? new Date(course.endDate) < new Date(response.data.endDate)
-              ? response.data.endDate
-              : course.endDate
-            : response.data.endDate,
-        };
-        dispatch(updateCourse(updatedCourse));
-      }
-  
+      const updatedCourse = await getCourse({ courseId: data.courseId });
+      dispatch(updateCourse(updatedCourse.data));
+
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при создании мероприятия.");

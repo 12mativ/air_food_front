@@ -10,9 +10,11 @@ import {
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteEvent } from '@/http/events/eventsAPI';
 import { removeEvent } from '@/lib/features/events/eventsSlice';
+import { updateCourse } from '@/lib/features/courses/coursesSlice'; // Предполагается, что у вас есть такой экшен
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ErrorAlert } from "../ErrorAlert";
+import { getCourse } from '@/http/courses/coursesAPI'; // Импортируйте функцию для получения курса
 
 export const DeleteEventModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -22,16 +24,23 @@ export const DeleteEventModal = () => {
   const isModalOpen = isOpen && type === "removeEvent";
 
   const handleDelete = async () => {
-    if (data.eventId) {
-      try {
-        await deleteEvent({ eventId: data.eventId });
-        dispatch(removeEvent({ eventId: data.eventId }));
-        onClose();
-      } catch (error) {
-        setError("Произошла ошибка при удалении мероприятия.");
-      }
-    } else {
-      setError("Не указан идентификатор мероприятия для удаления.");
+    if (!data.eventId || !data.courseId) {
+      setError("Не указан идентификатор мероприятия или курса для удаления.");
+      return;
+    }
+
+    try {
+      await deleteEvent({ eventId: data.eventId });
+      dispatch(removeEvent({ eventId: data.eventId }));
+
+      // Получение обновленных данных курса
+      const updatedCourse = await getCourse({ courseId: data.courseId });
+      dispatch(updateCourse(updatedCourse.data));
+
+      onClose(); // Убедитесь, что onClose вызывается после успешного удаления
+    } catch (error) {
+      console.error("Ошибка при удалении мероприятия:", error);
+      setError("Произошла ошибка при удалении мероприятия.");
     }
   };
 

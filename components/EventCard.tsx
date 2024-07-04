@@ -21,7 +21,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, course }) => {
   const handleDelete = (e: React.MouseEvent<HTMLDivElement | SVGSVGElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    onOpen("removeEvent", { eventId: event.id, eventName: event.name });
+    onOpen("removeEvent", { eventId: event.id, eventName: event.name, courseId: course.id });
   };
   return (
     <>
