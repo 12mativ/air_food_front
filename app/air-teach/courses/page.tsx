@@ -42,25 +42,25 @@ const Page = () => {
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
       {isAdmin(user) && (
-        <>
+        <div className="ml-10">
           <Link href={"/air-teach/students"}>
-            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            <Button className="ml-2 mb-2 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
               Все студенты
             </Button>
           </Link>
           <Link href={"/air-teach/coaches"}>
-            <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            <Button className="ml-2 mb-2 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
               Все тренеры
             </Button>
           </Link>
           <Link href={"/air-teach/courses"}>
-            <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+            <Button className="ml-2 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
               Все курсы
             </Button>
           </Link>
-        </>
+        </div>
       )}
-      <div className="flex flex-wrap mx-10 mt-6 pt-10">
+      <div className="flex flex-wrap mx-10 mt-4">
         {courses.length > 0
           ? courses.map((course) => (
               <CourseCard key={course.id} course={course} />

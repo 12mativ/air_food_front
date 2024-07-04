@@ -65,18 +65,18 @@ const Page = () => {
   }
 
   return (
-    <div className="flex items-center justify-center w-full h-full gap-x-20">
+    <div className="flex flex-col md:flex-row items-center justify-center w-full h-full gap-x-20">
       <div>
-        <p className="text-sky-500 text-7xl font-extrabold">
+        <p className="text-sky-500 text-5xl md:text-7xl font-extrabold mb-12">
           AirTeach
         </p>
       </div>
-      <div className=" flex flex-col bg-white text-2xl w-96 p-5 rounded-xl gap-y-3">
+      <div className=" flex flex-col bg-white text-2xl md:w-88 lg:w-96 p-5 rounded-xl gap-y-3">
         <p className="text-gray-600 font-bold text-base">
           Авторизация
         </p>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-2/3 gap-y-3">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col lg:w-2/3 gap-y-3">
             <FormField
               control={form.control}
               name="email"

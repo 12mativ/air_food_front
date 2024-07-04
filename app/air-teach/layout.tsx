@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/Header";
+import Header from "@/components/header";
 import LoaderIndicator from "@/components/Loader";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { check } from "@/http/user/userAPI";

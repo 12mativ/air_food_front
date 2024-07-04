@@ -23,11 +23,11 @@ const Header = () => {
             <div className='absolute top-1/2 transform -translate-y-1/2 right-5 text-sky-500 hover:text-sky-600'>
                 <LogOut onClick={handleLogout} size={25} className="cursor-pointer" />
             </div>
-            <div className="flex flex-row absolute top-1/2 transform -translate-y-1/2 right-16 text-sky-500 gap-x-1">
-                <LiaUserCircleSolid size={25} />
+            <div className="flex flex-row absolute top-1/2 transform -translate-y-1/2 right-16 text-sky-500 gap-x-1 text-sm sm:text-base">
+                <LiaUserCircleSolid size={25} className="w-4 h-5 sm:w-6 sm:h-7" />
                 {user.email}
             </div>
-            <div className="flex flex-row absolute top-1/2 transform -translate-y-1/2 left-16 text-sky-500 gap-x-4 text-3xl font-extrabold">
+            <div className="flex flex-row absolute top-1/2 transform -translate-y-1/2 left-16 text-sky-500 gap-x-4 text-xl sm:text-3xl font-extrabold">
                 <p>AirTeach</p>
             </div>
             <button type="button" onClick={() => router.back()}>
