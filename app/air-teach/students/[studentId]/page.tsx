@@ -7,6 +7,8 @@ import { useParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { formateComplexDate } from "@/utils/formateComplexDate";
+import { isAdmin } from "../../../../utils/roles";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const { onOpen } = useModal();
@@ -16,7 +18,7 @@ const Page = () => {
       (student) => student.id === params.studentId
     )
   );
-
+  const user = useAppSelector((state) => state.userReducer.user);
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="flex flex-col items-center gap-y-11">
@@ -46,6 +48,30 @@ const Page = () => {
             <p>Почта: {student?.email}</p>
             <p>Компетенция: Не задано</p>
           </div>
+        </div>
+        <div className="flex flex-col text-gray-500 font-bold w-full">
+          <div className="self-center">
+            <p>Расписание свободного времени</p>
+          </div>
+          <div className="font-semibold mx-1 my-5">
+            <p>Понедельник:</p>
+            <p>Вторник:</p>
+            <p>Среда:</p>
+            <p>Четрверг:</p>
+            <p>Пятница:</p>
+            <p>Суббота:</p>
+            <p>Воскресенье:</p>
+          </div>
+          {isAdmin(user) && (
+          <Button
+            onClick={() =>
+              onOpen("editStudentSchedule", { student: student })
+            }
+            className="bg-sky-500 hover:bg-sky-400"
+          >
+            Редактировать
+          </Button>
+        )}
         </div>
       </div>
     </div>

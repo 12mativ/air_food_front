@@ -1,6 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { findEqualItemsById } from "../../store";
 
+export interface ITimes {
+  id: string;
+  day: string;
+  time: any;
+  scheduleId: string;
+}
+
+export interface ISchedule {
+  id: string;
+  times: ITimes[];
+  userId: string;
+}
 export interface ICourseForStudent {
   id: string;
   name: string;
@@ -17,7 +29,9 @@ export interface IStudent {
   lastName: string;
   birthDate: string;
   userId: string;
-  courses: ICourseForStudent[]
+  courses: ICourseForStudent[];
+  schedule: ISchedule
+
 }
 
 interface IStudentsState {

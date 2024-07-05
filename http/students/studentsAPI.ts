@@ -1,4 +1,4 @@
-import { IStudent } from "@/lib/features/students/studentsSlice";
+import { IStudent, ITimes } from "@/lib/features/students/studentsSlice";
 import { $authHost } from "..";
 import { AxiosResponse } from "axios";
 
@@ -34,7 +34,8 @@ export const editStudent = async ({
   lastName,
   middleName,
   birthDate,
-  courseId
+  courseId,
+  times,
 }: {
   id: string;
   firstName?: string;
@@ -42,7 +43,8 @@ export const editStudent = async ({
   middleName?: string;
   birthDate?: string;
   courseId?: string;
+  times?: ITimes[];
 }): Promise<AxiosResponse<IStudent>> => {
-  const response = await $authHost.patch(`/student/${id}`, {firstName, lastName, middleName, birthDate, courseId});
+  const response = await $authHost.patch(`/student/${id}`, {firstName, lastName, middleName, birthDate, courseId, times});
   return response; 
 };
