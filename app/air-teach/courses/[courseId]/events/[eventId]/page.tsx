@@ -75,7 +75,7 @@ const Page = () => {
 
   return (
     <div className="flex justify-center items-center w-full h-full">
-      <div className="flex flex-col items-center gap-y-11">
+      <div className="flex flex-col gap-y-3 w-full justify-center items-center text-gray-500 font-semibold">
         <div className="flex items-center gap-x-3">
           <p className="text-3xl font-bold text-sky-500">
             Мероприятие "{event?.name}"
@@ -105,7 +105,7 @@ const Page = () => {
         {isAdmin(user) && (
           <>
             <p>Тренеры:</p>
-            <div className="flex flex-wrap mx-10 mt-6 pt-10">
+            <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
               {coachesOnCourse?.map((coach) => (
                 <CoachCard key={coach.id} coach={coach} />
               ))}
@@ -124,7 +124,7 @@ const Page = () => {
         {isAdmin(user) && (
           <>
             <p>Тренажёры:</p>
-            <div className="flex flex-wrap mx-10 mt-6 pt-10">
+            <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
               {filteredSimulators?.map((simulator) => (
                 <SimulatorCard key={simulator.id} simulator={simulator} />
               ))}

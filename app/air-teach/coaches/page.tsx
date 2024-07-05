@@ -59,25 +59,25 @@ const Page = () => {
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
       {isAdmin(user) && (
-        <div className="ml-10">
+        <div className="flex flex-wrap justify-center sm:justify-normal mx-1 sm:mx-10 w-full">
           <Link href={"/air-teach/students"}>
-            <Button className="ml-2 mb-2 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            <Button className="mx-1 mb-2 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
               Все студенты
             </Button>
           </Link>
           <Link href={"/air-teach/coaches"}>
-            <Button className="ml-2 mb-2 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500 hover:text-white">
+            <Button className="mx-1 mb-2 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500 hover:text-white">
               Все тренеры
             </Button>
           </Link>
           <Link href={"/air-teach/courses"}>
-            <Button className="ml-2 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            <Button className="mx-1 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
               Все курсы
             </Button>
           </Link>
         </div>
       )}
-      <div className="mt-4 mx-10 relative">
+      <div className="mt-4 mx-3 sm:mx-10 relative">
         <input
           className="shadow-lg rounded-xl w-full md:w-[40%] lg:h-10 xl:w-[28%] 2xl:w-[20%] h-12 pl-8 md:h-8"
           type="text"
@@ -86,7 +86,7 @@ const Page = () => {
         />
         <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
       </div>
-      <div className="flex flex-wrap mx-10 pt-2 pb-20">
+      <div className="flex flex-wrap mx-1 sm:mx-10 mt-4">
         {coaches.length > 0 ? (
           coaches.map((coach: ICoach) => (
             <CoachCard key={coach.id} coach={coach} />
