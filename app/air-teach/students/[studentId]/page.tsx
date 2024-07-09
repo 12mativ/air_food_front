@@ -9,6 +9,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { formateComplexDate } from "@/utils/formateComplexDate";
 import { isAdmin } from "../../../../utils/roles";
 import { Button } from "@/components/ui/button";
+import { IStudent } from "../../../../lib/features/students/studentsSlice";
 
 const Page = () => {
   const { onOpen } = useModal();
@@ -19,6 +20,38 @@ const Page = () => {
     )
   );
   const user = useAppSelector((state) => state.userReducer.user);
+
+  const daysOfWeek = [
+    "Понедельник",
+    "Вторник",
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота",
+    "Воскресенье",
+  ];
+
+  const getTimeString = (
+    student: IStudent | undefined,
+    day: string
+  ): string => {
+    if (!student || !student.schedule || !student.schedule.times) {
+      return "Не задано";
+    }
+
+    const timeEntry = student.schedule.times.find(
+      (time) => time.day === day.toLowerCase()
+    );
+    if (!timeEntry || !timeEntry.time || timeEntry.time.length === 0) {
+      return "Не задано";
+    }
+
+    const startTime = timeEntry.time[0].startTime;
+    const endTime = timeEntry.time[0].endTime;
+
+    return `${startTime}-${endTime}`;
+  };
+
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="flex flex-col items-center gap-y-11">
@@ -54,24 +87,22 @@ const Page = () => {
             <p>Расписание свободного времени</p>
           </div>
           <div className="font-semibold mx-1 my-5">
-            <p>Понедельник:</p>
-            <p>Вторник:</p>
-            <p>Среда:</p>
-            <p>Четрверг:</p>
-            <p>Пятница:</p>
-            <p>Суббота:</p>
-            <p>Воскресенье:</p>
+            {daysOfWeek.map((day, index) => (
+              <p key={index}>
+                {day}: {getTimeString(student, day)}
+              </p>
+            ))}
           </div>
           {isAdmin(user) && (
-          <Button
-            onClick={() =>
-              onOpen("editStudentSchedule", { student: student })
-            }
-            className="bg-sky-500 hover:bg-sky-400"
-          >
-            Редактировать
-          </Button>
-        )}
+            <Button
+              onClick={() =>
+                onOpen("editStudentSchedule", { student: student })
+              }
+              className="bg-sky-500 hover:bg-sky-400"
+            >
+              Редактировать
+            </Button>
+          )}
         </div>
       </div>
     </div>

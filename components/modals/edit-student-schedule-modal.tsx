@@ -68,6 +68,16 @@ const parseTimes = (values: z.infer<typeof formSchema>) => {
   return times;
 };
 
+const daysOfWeek = [
+  { key: 'monday', label: 'Понедельник' },
+  { key: 'tuesday', label: 'Вторник' },
+  { key: 'wednesday', label: 'Среда' },
+  { key: 'thursday', label: 'Четверг' },
+  { key: 'friday', label: 'Пятница' },
+  { key: 'saturday', label: 'Суббота' },
+  { key: 'sunday', label: 'Воскресенье' },
+];
+
 export const EditStudentSheduleModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [error, setError] = useState("");
@@ -107,20 +117,20 @@ export const EditStudentSheduleModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px] max-h-[80vh] overflow-y-auto">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Редактрирование расписания свободного времени</DialogTitle>
+          <DialogTitle>Редактирование расписания свободного времени</DialogTitle>
           <DialogDescription>Введите свободное время в формате 12-15</DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => (
+            {daysOfWeek.map((day) => (
               <FormField
-                key={day}
+                key={day.key}
                 control={form.control}
-                name={day as keyof z.infer<typeof formSchema>}
+                name={day.key as keyof z.infer<typeof formSchema>}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{day.charAt(0).toUpperCase() + day.slice(1)}</FormLabel>
+                    <FormLabel>{day.label}</FormLabel>
                     <FormControl>
                       <Input
                         className="focus-visible:ring-0 focus-visible:ring-offset-0"
