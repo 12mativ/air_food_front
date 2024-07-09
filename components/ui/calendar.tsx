@@ -40,6 +40,9 @@ function Calendar({
   };
 
   const years = Array.from({ length: 111 }, (_, i) => new Date().getFullYear() - 100 + i);
+
+  const currentDate = new Date();
+
   return (
     <DayPicker
       locale={ru}
@@ -105,6 +108,7 @@ function Calendar({
       }}
       month={currentMonth}
       onMonthChange={handleMonthChange}
+      disabled={[currentDate]} 
       {...props}
     />
   )
