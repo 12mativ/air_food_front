@@ -2,10 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { findEqualItemsById } from "../../store";
 
 export interface ITimes {
-  id: string;
   day: string;
-  time: any;
-  scheduleId: string;
+  time: { startTime: number; endTime: number }[];
 }
 
 export interface ISchedule {

@@ -50,6 +50,24 @@ const formSchema = z.object({
   sunday: z.string().optional(),
 });
 
+const parseTime = (timeStr: string) => {
+  const [startTime, endTime] = timeStr.split('-').map(Number);
+  return { startTime, endTime };
+};
+
+const parseTimes = (values: z.infer<typeof formSchema>) => {
+  const times = [];
+  for (const [day, timeStr] of Object.entries(values)) {
+    if (timeStr) {
+      times.push({
+        day,
+        time: [parseTime(timeStr)],
+      });
+    }
+  }
+  return times;
+};
+
 export const EditStudentSheduleModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [error, setError] = useState("");
@@ -64,20 +82,19 @@ export const EditStudentSheduleModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // try {
-    //   const response = await editStudent({
-    //     id: data.student!.id,
-    //     times: values
-    //   });
+    try {
+      const times = parseTimes(values);
+      const response = await editStudent({
+        id: data.student!.id,
+        times,
+      });
 
-    //   dispatch(updateStudent(response.data));
+      dispatch(updateStudent(response.data));
 
-    //   handleClose();
-    // } catch (error: AxiosError | any) {
-    //   setError("Произошла ошибка при редактировании студента.");
-    // }
-    console.log(values);
-    handleClose();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании студента.");
+    }
   };
 
   const handleClose = () => {
@@ -96,133 +113,27 @@ export const EditStudentSheduleModal = () => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="monday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Понедельник</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="tuesday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Вторник</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      type="text"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="wednesday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Среда</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="thursday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Четрверг</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="friday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Пятница</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="saturday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Суббота</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="sunday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Воскресенье</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => (
+              <FormField
+                key={day}
+                control={form.control}
+                name={day as keyof z.infer<typeof formSchema>}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{day.charAt(0).toUpperCase() + day.slice(1)}</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                        placeholder="..."
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
             <DialogFooter>
               <Button disabled={isLoading} type="submit">
                 Сохранить
