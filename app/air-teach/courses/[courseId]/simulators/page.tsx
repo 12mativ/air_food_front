@@ -40,15 +40,13 @@ const Page = () => {
     fetchSimulators();
   }, [dispatch, params.courseId, user]);
 
-  const filteredSimulators = simulators?.filter(simulator => simulator.courseId === params.courseId);
-
   return (
     <div className="w-full h-full items-center bg-[#ebebeb]">
       <div className="flex flex-wrap mx-10 mt-6 pt-10">
         {isLoading ? (
           <LoaderIndicator />
         ) : (
-          filteredSimulators.map((simulator) => (
+          simulators?.map((simulator) => (
             <SimulatorCard key={simulator.id} simulator={simulator} />
           ))
         )}

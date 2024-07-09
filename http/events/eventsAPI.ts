@@ -57,7 +57,7 @@ export const addSimulatorToEvent = async ({
   simulatorId: string;
 }): Promise<AxiosResponse<IEvent>> => {
   const response = await $authHost.patch(`/event/${eventId}`, {
-    simulatorId: simulatorId,
+    simulatorId,
   });
   return response;
 };

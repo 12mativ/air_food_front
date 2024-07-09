@@ -7,7 +7,7 @@ export const getSimulatorsOnCourse = async ({
 }: {
   courseId: string;
 }) => {
-  const response = await $authHost.get(`/simulator/${courseId}`);
+  const response = await $authHost.get(`/simulator/get-on-course/${courseId}`);
   return response.data;
 };
 
@@ -39,7 +39,7 @@ export const getSimulatorsOnEvent = async ({
 }: {
   eventId: string;
 }) => {
-  const response = await $authHost.get(`/simulator/${eventId}`);
+  const response = await $authHost.get(`/simulator/get-on-event/${eventId}`);
   return response.data;
 };
 

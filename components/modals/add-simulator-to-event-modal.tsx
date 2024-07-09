@@ -80,6 +80,7 @@ export const AddSimulatorToEventModal = () => {
 
       dispatch(addSimulator(simulator));
 
+      console.log(data.event)
       handleClose();
     } catch (error: AxiosError | any) {
       setError("Произошла ошибка при добавлении тренажёра.");

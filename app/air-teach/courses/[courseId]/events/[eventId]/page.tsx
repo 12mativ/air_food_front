@@ -16,8 +16,7 @@ import LoaderIndicator from "../../../../../../components/Loader";
 import { addAllCoaches } from "../../../../../../lib/features/allCoaches/allCoachesSlice";
 import SimulatorCard from "../../../../../../components/SimulatorCard";
 import { addSimulators } from "../../../../../../lib/features/simulators/simulatorsSlice";
-import { getSimulatorsOnEvent, getSimulatorsOnCourse } from "@/http/simulators/simulatorsAPI";
-
+import { getSimulatorsOnEvent } from "@/http/simulators/simulatorsAPI";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +32,7 @@ const Page = () => {
   const coachesOnCourse = useAppSelector(
     (state) => state.coachesReducer.coaches
   );
-  const simulators = useAppSelector(
+  const simulatorsOnEvent = useAppSelector(
     (state) => state.simulatorsReducer.simulators
   );
 
@@ -52,10 +51,7 @@ const Page = () => {
   
         if (isAdmin(user) || isCourseOrganiser(user)) {
           const simulatorsOnEventResponse = await getSimulatorsOnEvent({ eventId: params.eventId as string });
-          dispatch(addSimulators(simulatorsOnEventResponse.data?.simulators ?? []));
-  
-          const simulatorsOnCourseResponse = await getSimulatorsOnCourse({ courseId: params.courseId as string });
-          dispatch(addSimulators(simulatorsOnCourseResponse.data?.simulators ?? []));
+          dispatch(addSimulators(simulatorsOnEventResponse.data.simulators));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -65,13 +61,11 @@ const Page = () => {
     };
   
     fetchData();
-  }, [params.eventId, params.courseId, user, dispatch]);
+  }, [params.eventId, user, dispatch]);
 
   if (isLoading) {
     return <LoaderIndicator />;
   }
-
-  const filteredSimulators = simulators?.filter(simulator => simulator.courseId === params.courseId);
 
   return (
     <div className="flex justify-center items-center w-full h-full">
@@ -125,7 +119,7 @@ const Page = () => {
           <>
             <p>Тренажёры:</p>
             <div className="flex flex-wrap w-full justify-center mx-5 md:mx-10">
-              {filteredSimulators?.map((simulator) => (
+              {simulatorsOnEvent?.map((simulator) => (
                 <SimulatorCard key={simulator.id} simulator={simulator} />
               ))}
             </div>

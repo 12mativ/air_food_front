@@ -18,6 +18,8 @@ import { getEvents } from "../../../../http/events/eventsAPI";
 import { addAllStudents } from "../../../../lib/features/allStudents/allStudentsSlice";
 import { addEvents } from "../../../../lib/features/events/eventsSlice";
 import Link from "next/link";
+import { getSimulatorsOnCourse } from "@/http/simulators/simulatorsAPI";
+import { addSimulators } from "@/lib/features/simulators/simulatorsSlice";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,6 +49,18 @@ const Page = () => {
           dispatch(addStudents(res.data.students));
         }
       );
+      const fetchSimulators = async () => {
+        setIsLoading(true);
+        try {
+          if (isAdmin(user) || isCourseOrganiser(user)) {
+            const res = await getSimulatorsOnCourse({ courseId: params.courseId as string });
+          }
+        } catch (error) {
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchSimulators();
     }
 
     getEvents({ courseId: params.courseId as string })
@@ -54,6 +68,7 @@ const Page = () => {
         dispatch(addEvents(res.data.events));
       })
       .finally(() => setIsLoading(false));
+      
   }, [params.courseId, user, dispatch]);
 
   useEffect(() => {
