@@ -92,6 +92,10 @@ export const EditStudentSheduleModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    handleSave(values);
+  };
+
+  const handleSave = async (values: z.infer<typeof formSchema>) => {
     try {
       const times = parseTimes(values);
       const response = await editStudent({

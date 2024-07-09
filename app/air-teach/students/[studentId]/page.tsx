@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React from "react";
+import React, { useEffect } from "react";
 import { IoPersonSharp } from "react-icons/io5";
 import { useAppSelector } from "@/hooks/redux-hooks";
 import { useParams } from "next/navigation";
@@ -38,19 +38,45 @@ const Page = () => {
     if (!student || !student.schedule || !student.schedule.times) {
       return "Не задано";
     }
-
-    const timeEntry = student.schedule.times.find(
-      (time) => time.day === day.toLowerCase()
+  
+    const dayInEnglish = convertDayToEnglish(day);
+  
+    const timeEntries = student.schedule.times.filter(
+      (time) => {
+        return time.day === dayInEnglish;
+      }
     );
-    if (!timeEntry || !timeEntry.time || timeEntry.time.length === 0) {
+    console.log(`Time entries for ${day}:`, timeEntries);
+  
+    if (!timeEntries || timeEntries.length === 0) {
       return "Не задано";
     }
-
-    const startTime = timeEntry.time[0].startTime;
-    const endTime = timeEntry.time[0].endTime;
-
-    return `${startTime}-${endTime}`;
+  
+    const timeStrings = timeEntries.map(timeEntry => 
+      timeEntry.time.map(t => `${t.startTime}-${t.endTime}`).join(", ")
+    ).join(", ");
+  
+    return timeStrings;
   };
+  
+  type DayOfWeek = "понедельник" | "вторник" | "среда" | "четверг" | "пятница" | "суббота" | "воскресенье";
+
+  const convertDayToEnglish = (day: string): string => {
+    const daysMap: Record<DayOfWeek, string> = {
+      "понедельник": "monday",
+      "вторник": "tuesday",
+      "среда": "wednesday",
+      "четверг": "thursday",
+      "пятница": "friday",
+      "суббота": "saturday",
+      "воскресенье": "sunday"
+    };
+
+    return daysMap[day.toLowerCase() as DayOfWeek] || day.toLowerCase();
+  };
+  useEffect(() => {
+
+  }, [student]);
 
   return (
     <div className="flex justify-center items-center w-full h-full">
