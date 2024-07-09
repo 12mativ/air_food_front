@@ -16,6 +16,30 @@ function Calendar({
   showOutsideDays,
   ...props
 }: CalendarProps) {
+  const [selectedYear, setSelectedYear] = React.useState(new Date().getFullYear());
+  const [currentMonth, setCurrentMonth] = React.useState(new Date());
+
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newYear = parseInt(event.target.value, 10);
+    setSelectedYear(newYear);
+    setCurrentMonth(new Date(newYear, currentMonth.getMonth(), 1));
+  };
+
+  const handleMonthChange = (date: Date) => {
+    setCurrentMonth(date);
+  };
+
+  const handlePreviousMonth = () => {
+    const previousMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    setCurrentMonth(previousMonth);
+  };
+
+  const handleNextMonth = () => {
+    const nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+    setCurrentMonth(nextMonth);
+  };
+
+  const years = Array.from({ length: 111 }, (_, i) => new Date().getFullYear() - 100 + i);
   return (
     <DayPicker
       locale={ru}
@@ -58,7 +82,29 @@ function Calendar({
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        Caption: ({ displayMonth }) => (
+          <div className="flex justify-center items-center space-x-2">
+            <button onClick={handlePreviousMonth} className="focus:outline-none">
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span>{displayMonth.toLocaleDateString('ru-RU', { month: 'long' })}</span>
+            <select 
+              value={selectedYear} 
+              onChange={handleYearChange} 
+              className="p-2 border rounded"
+            >
+              {years.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+            <button onClick={handleNextMonth} className="focus:outline-none">
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        ),
       }}
+      month={currentMonth}
+      onMonthChange={handleMonthChange}
       {...props}
     />
   )
