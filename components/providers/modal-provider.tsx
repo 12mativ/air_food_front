@@ -15,6 +15,7 @@ import { AddSimulatorToEventModal } from "../modals/add-simulator-to-event-modal
 import { EditCourseModal } from "../modals/edit-course-modal";
 import { EditEventModal } from "../modals/edit-event-modal";
 import { EditStudentModal } from "../modals/edit-student-modal";
+import { CreateCompetenceModal } from "../modals/create-competence-modal";
 import { EditStudentSheduleModal } from "../modals/edit-student-schedule-modal";
 
 export function ModalProvider() {
@@ -44,6 +45,7 @@ export function ModalProvider() {
       <AddSimulatorToEventModal/>
       <EditCourseModal />
       <EditEventModal />
+      <CreateCompetenceModal/>
       <EditStudentSheduleModal />
     </>
   );

@@ -1,11 +1,12 @@
 import { ICoach } from "@/lib/features/coaches/coachesSlice";
+import { ICompetence } from "@/lib/features/competencies/competenciesSlice";
 import { ICourse } from "@/lib/features/courses/coursesSlice";
 import { IEvent } from "@/lib/features/events/eventsSlice";
 import { ISimulator } from "@/lib/features/simulators/simulatorsSlice";
 import { IStudent } from "@/lib/features/students/studentsSlice";
 import { create } from "zustand";
 
-export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach" | "removeCourse" | "removeEvent" | "editEvent" | "editCourse" | "removeSimulator" | "createSimulator" | "editSimulator" | "addSimulatorToEvent" | "editStudentSchedule";
+export type ModalType = "editStudent" | "createCourse" | "createEvent" | "addStudentToCourse" | "addCoachToCourse" | "removeStudentFromCourse" | "editCoach" | "removeCourse" | "removeEvent" | "editEvent" | "editCourse" | "removeSimulator" | "createSimulator" | "editSimulator" | "addSimulatorToEvent" | "removeCompetence" | "createCompetence" | "editStudentSchedule";
 
 export interface ModalData {
   student?: IStudent;
@@ -21,6 +22,9 @@ export interface ModalData {
   event?: IEvent;
   simulator?: ISimulator;
   simulatorId?: string;
+  competenceId?: string;
+  competenceName?: string;
+  competence?: ICompetence
 }
 
 interface ModalStore {

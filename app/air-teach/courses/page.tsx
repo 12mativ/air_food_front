@@ -35,6 +35,12 @@ const Page = () => {
     }
   }, []);
 
+  const sortedCourses = [...courses].sort((a, b) => {
+    const dateA = new Date(a.startDate);
+    const dateB = new Date(b.startDate);
+    return dateA.getTime() - dateB.getTime();
+  });
+
   if (isLoading) {
     return <LoaderIndicator />;
   }
@@ -54,24 +60,30 @@ const Page = () => {
             </Button>
           </Link>
           <Link href={"/air-teach/courses"}>
-            <Button className="mx-1 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+            <Button className="mx-1 ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500 hover:text-white">
               Все курсы
+            </Button>
+          </Link>
+          <Link href={"/air-teach/competencies"}>
+            <Button className="ml-12 w-auto bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            Список компетенций
             </Button>
           </Link>
         </div>
       )}
-      <div className="flex flex-wrap mx-1 sm:mx-10 mt-4">
-        {courses.length > 0
-          ? courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))
+      <div className="flex flex-wrap mx-10 mt-6 pt-10">
+      {sortedCourses.length > 0 ? (
+          sortedCourses.map((course) => ( 
+            <CourseCard key={course.id} course={course} />
+          ))
+        )
           : (isStudent(user) || isCoach(user)) && (
-              <div className="flex items-center justify-center h-full w-full">
-                <p className="text-center text-gray-500 text-lg">
-                  Курсы не найдены
-                </p>
-              </div>
-            )}
+            <div className="flex items-center justify-center h-full w-full">
+              <p className="text-center text-gray-500 text-lg">
+                Курсы не найдены
+              </p>
+            </div>
+          )}
         {(isCourseOrganiser(user) || isAdmin(user)) && (
           <button
             onClick={() => onOpen("createCourse")}

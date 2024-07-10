@@ -7,6 +7,7 @@ import coachesReducer from "./features/coaches/coachesSlice";
 import eventsReducer from "./features/events/eventsSlice";
 import allCoachesReducer from "./features/allCoaches/allCoachesSlice";
 import simulatorsReducer from "./features/simulators/simulatorsSlice";
+import compenciesReducer from "./features/competencies/competenciesSlice"
 
 export const findEqualItemsById = (array: any, id: any) => {
   const equalItem = array.find((el: any) => el.id === id);
@@ -25,7 +26,8 @@ export const makeStore = () => {
       eventsReducer,
       coachesReducer,
       allCoachesReducer,
-      simulatorsReducer
+      simulatorsReducer,
+      compenciesReducer
     },
   });
 };
