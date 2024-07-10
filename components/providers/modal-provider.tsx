@@ -15,6 +15,7 @@ import { AddSimulatorToEventModal } from "../modals/add-simulator-to-event-modal
 import { EditCourseModal } from "../modals/edit-course-modal";
 import { EditEventModal } from "../modals/edit-event-modal";
 import { EditStudentModal } from "../modals/edit-student-modal";
+import { CreateCompetenceModal } from "../modals/create-competence-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -43,6 +44,7 @@ export function ModalProvider() {
       <AddSimulatorToEventModal/>
       <EditCourseModal />
       <EditEventModal />
+      <CreateCompetenceModal/>
     </>
   );
 }

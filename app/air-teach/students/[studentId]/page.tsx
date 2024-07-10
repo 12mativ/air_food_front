@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { formateComplexDate } from "@/utils/formateComplexDate";
+import { IoBarChartSharp } from "react-icons/io5";
 
 const Page = () => {
   const { onOpen } = useModal();
@@ -44,9 +45,17 @@ const Page = () => {
                 : "Не задано"}
             </p>
             <p>Почта: {student?.email}</p>
-            <p>Компетенция: Не задано</p>
           </div>
         </div>
+        <div className="flex items-center gap-x-3">
+      <p className="text-3xl font-bold text-sky-500">Компетенции</p>
+          <Pencil
+            className="text-sky-500 cursor-pointer"
+          />
+        </div>
+        <div className="flex flex-row items-center gap-x-20">
+        <IoBarChartSharp className="text-9xl text-gray-400"/>
+          </div>
       </div>
     </div>
   );

@@ -70,7 +70,7 @@ const Page = () => {
       {isAdmin(user) && (
         <>
           <Link href={"/air-teach/students"}>
-            <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500">
+            <Button className="ml-12 w-32 bg-[#7f7f7f] text-white hover:bg-sky-500 hover:text-white">
               Все студенты
             </Button>
           </Link>
@@ -82,6 +82,11 @@ const Page = () => {
           <Link href={"/air-teach/courses"}>
             <Button className="ml-12 w-32 bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
               Все курсы
+            </Button>
+          </Link>
+          <Link href={"/air-teach/competencies"}>
+            <Button className="ml-12 w-auto bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            Список компетенций
             </Button>
           </Link>
         </>

@@ -75,6 +75,11 @@ const Page = () => {
               Все курсы
             </Button>
           </Link>
+          <Link href={"/air-teach/competencies"}>
+            <Button className="ml-12 w-auto bg-[#cecece] text-[#7f7f7f] hover:bg-sky-500 hover:text-white">
+            Список компетенций
+            </Button>
+          </Link>
         </>
       )}
       <div className="mt-4 mx-10 relative">
