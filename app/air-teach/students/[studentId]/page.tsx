@@ -46,7 +46,6 @@ const Page = () => {
         return time.day === dayInEnglish;
       }
     );
-    console.log(`Time entries for ${day}:`, timeEntries);
   
     if (!timeEntries || timeEntries.length === 0) {
       return "Не задано";
