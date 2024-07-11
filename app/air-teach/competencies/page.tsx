@@ -71,8 +71,7 @@ const Page = () => {
               )
           )
         ) : (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center text-gray-500 text-lg">Компетенции не найдены</p>
+          <div>
           </div>
         )}
       </div>

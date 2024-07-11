@@ -27,7 +27,7 @@ export const makeStore = () => {
       coachesReducer,
       allCoachesReducer,
       simulatorsReducer,
-      compenciesReducer
+      compenciesReducer,
     },
   });
 };

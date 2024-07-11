@@ -1,5 +1,14 @@
 import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ICompetence } from "../competencies/competenciesSlice";
+
+export interface IImprovingCompetence {
+  id: string;
+  improvingValue: number;
+  competenceId: string;
+  courseId: string;
+  competence: ICompetence;
+}
 
 export interface ICourse {
   id: string;
@@ -7,7 +16,7 @@ export interface ICourse {
   startDate: string;
   endDate: string;
   creatorId: string;
-  improvingCompetencies: any[];
+  improvingCompetencies: IImprovingCompetence[];
   prerequisiteCompetencies: any[];
 }
 
