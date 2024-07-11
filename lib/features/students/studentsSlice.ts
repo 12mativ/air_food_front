@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { findEqualItemsById } from "../../store";
 import { IStudentCompetenceCharacteristic } from "../competencies/competenciesSlice";
+import { IEvent } from "../events/eventsSlice";
 
 export interface ITimes {
   day: string;
@@ -11,6 +12,12 @@ export interface ISchedule {
   id: string;
   times: ITimes[];
   userId: string;
+}
+
+export interface ICurriculum {
+  id: string;
+  cirriculumEvents: IEvent[];
+  student: {id: string};
 }
 
 export interface ICourseForStudent {
@@ -29,9 +36,12 @@ export interface IStudent {
   lastName: string;
   birthDate: string;
   userId: string;
+  scheduleId: string;
+  curriculumId: string;
   competencies: IStudentCompetenceCharacteristic[]
   courses: ICourseForStudent[];
   schedule: ISchedule;
+  curriculum: ICurriculum;
 }
 
 interface IStudentsState {
@@ -92,16 +102,17 @@ export const studentsSlice = createSlice({
     },
     removeStudent: (state, action: PayloadAction<{studentId: string}>) => {
       state.students = state.students.filter(s => s.id !== action.payload.studentId)
-      // const index = state.students.findIndex(
-      //   (student) => student.id === action.payload
-      // );
-      // if (index !== -1) {
-      //   state.students.splice(index, 1);
-      // }
     },
+    addCurriculum: (state, action: PayloadAction<ICurriculum>) => {
+      state.students.forEach(s => {
+        if (s.id === action.payload.student.id) {
+          s.curriculum = action.payload
+        }
+      })
+    }
   },
 });
 
 export default studentsSlice.reducer;
 
-export const { addStudents, addStudent, updateStudent, removeStudent, addStudentCompetence, removeStudentCompetence, updateStudentSchedule } = studentsSlice.actions;
+export const { addStudents, addStudent, updateStudent, removeStudent, addStudentCompetence, removeStudentCompetence, updateStudentSchedule, addCurriculum } = studentsSlice.actions;
