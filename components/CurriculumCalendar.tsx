@@ -17,10 +17,6 @@ export default function CurriculumCalendar({events}: CurriculumCalendarProps) {
         plugins={[ dayGridPlugin  ]}
         initialView="dayGridMonth"
         events={events}
-        // events={[
-        //   { title: 'event 1 event 1event 1event 1event 1event 1event 1', start: '2024-07-02T08:04:07+00:00', end: '2024-07-02T08:19:53+00:00' },
-        //   { title: 'event 2', date: '2024-04-02' }
-        // ]}
         eventContent={renderEventContent}
       />
     </div>
